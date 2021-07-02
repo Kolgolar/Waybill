@@ -1,0 +1,18 @@
+﻿{% extends 'app_main/layout.html' %}
+
+{% block title %}Создание формы{% endblock %}
+
+{% block content %}
+    <ul class="wbform">
+        <form method="post">
+            {% csrf_token %}
+            {{ form.date }}<br><br>
+            {{ form.transport }}<br><br>
+            {{ form.time_in }}<br><br>
+            {{ form.time_out }}<br><br>
+            {{ form.route }}<br><br>
+            {{ form.expense_group }}<br><br>
+            {{ form.unit }}
+        </form>
+    </ul>
+{% endblock %}

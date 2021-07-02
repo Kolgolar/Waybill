@@ -37,6 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'app_main'
 ]
 
 # Middleware framework
@@ -111,3 +113,5 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 STATIC_URL = '/static/'
 STATIC_ROOT = posixpath.join(*(BASE_DIR.split(os.path.sep) + ['static']))
+ROOT_PATH = os.path.dirname(__file__)
+STATICFILES_DIRS = [os.path.join(ROOT_PATH, 'static')]
