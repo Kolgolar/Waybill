@@ -23,6 +23,8 @@ class WayBill(models.Model):
     unit = models.CharField('Подразделение', max_length = 32)
 
     
+
+    
     def __str__(self):
         return self.route
 
