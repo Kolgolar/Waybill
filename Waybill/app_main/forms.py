@@ -16,7 +16,7 @@ class WayBillForm(ModelForm):
                 'placeholder' : 'Заполнится автоматически'}),
             'route' : forms.TextInput(attrs={'style' : 'width:300px'}),
             'expense_group' : forms.TextInput(attrs={'style' : 'width:300px'}),
-            'unit' : forms.TextInput(attrs={'style' : 'width:300px'})
+            'unit' : forms.TextInput(attrs={'style' : 'width:300px'}),
         }
        
 
