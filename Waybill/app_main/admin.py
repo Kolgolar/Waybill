@@ -1,5 +1,6 @@
 from django.contrib import admin
-from .models import WayBill, Transport
+from .models import WRide, WHead, Transport
 
-admin.site.register(WayBill)
+admin.site.register(WRide)
+admin.site.register(WHead)
 admin.site.register(Transport)

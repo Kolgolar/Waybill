@@ -1,16 +1,14 @@
-from .models import WayBill, Transport
-from django.forms import ModelForm, TextInput
+from .models import WRide, WHead, Transport
+from django.forms import ModelForm, TextInput, modelformset_factory
 from django import forms
 
-class WayBillForm(ModelForm):
+class WRideForm(ModelForm):
     class Meta:
-        model = WayBill
-        fields = ['date', 'transport', 'time_in', 'time_out', 'route', 'expense_group', 'unit']
+        model = WRide
+        fields = ['time_in', 'time_out', 'route', 'expense_group', 'unit']
         
-        widgets={
-            'date' : forms.SelectDateWidget(attrs={'style' : 'width:100px'}),
-            'transport' : forms.Select(attrs={'style' : 'width:300px'}),
-            'time_in' : forms.TextInput(attrs={'style' : 'width:300px'}),
+        widgets={            
+            'time_in' : forms.TimeInput(attrs={'style' : 'width:300px'}),
             'time_out' : forms.TimeInput(attrs={
                 'style' : 'width:300px', 
                 'placeholder' : 'Заполнится автоматически'}),
@@ -18,6 +16,13 @@ class WayBillForm(ModelForm):
             'expense_group' : forms.TextInput(attrs={'style' : 'width:300px'}),
             'unit' : forms.TextInput(attrs={'style' : 'width:300px'}),
         }
-       
 
-            
+
+class WHeadForm(ModelForm):
+    class Meta:
+        model = WHead
+        fields = ['date', 'transport']
+        widgets={
+            'date' : forms.SelectDateWidget(attrs={'style' : 'width:100px'}),
+            'transport' : forms.Select(attrs={'style' : 'width:300px'}),
+    }

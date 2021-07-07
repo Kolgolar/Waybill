@@ -5,8 +5,9 @@
 {% block content %}
     <div class="wbform">
         <form method="post">
-            {% csrf_token %}
-            {{ form.as_p}}
+            {% csrf_token %}            
+            {{ head_form.as_p}}
+            {{ ride_formset.as_p}}
             <span>{{ error }}</span>
             <button class="btn btn-success" type="submit">Создать маршрутный лист</button>
         </form>
