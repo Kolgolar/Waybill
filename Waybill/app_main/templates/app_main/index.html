@@ -3,14 +3,18 @@
 {% block title %}Создание формы{% endblock %}
 
 {% block content %}
-    <div class="wbform">
-        <form method="post">
+    
+    <form method="post">
+        <div class="wbform">
             {% csrf_token %}            
-            {{ head_form.as_p}}
+            Дата: {{ head_form.date}}<br><br>
+            Транспорт: {{ head_form.transport}}<br><br>
+
             {{ ride_formset.as_p}}
             <span>{{ error }}</span>
             <button class="btn btn-success" type="submit">Создать маршрутный лист</button>
-        </form>
-    </div>
+        </div>        
+    </form>
+    
 
 {% endblock %}

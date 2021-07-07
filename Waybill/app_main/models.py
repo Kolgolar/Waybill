@@ -7,13 +7,14 @@ class Transport(models.Model):
     plate = models.CharField('Гос. рег. знак', max_length = 16)
 
     def __str__(self):
-        return '{}'.format(self.id) #Вывод id автобуса
+        return 'Автобус №' + str(self.id) #Вывод id автобуса
 
     class Meta:
         verbose_name = 'Автотранспорт ГК "Альтекс"'
         verbose_name_plural = 'Справочник автотранспорта ГК "Альтекс"'
 
 class WRide(models.Model):
+    ride_id = models.PositiveIntegerField('№')
     time_in = models.TimeField('Время прибытия')
     time_out = models.TimeField('Время убытия')
     route = models.CharField('Маршрут', max_length=5)
@@ -22,17 +23,19 @@ class WRide(models.Model):
 
     
     def __str__(self):
-        return self.route
+        return 'Поездка №' + str(self.id) + ', относится к путевому листу №' + str(self.ride_id)    
 
     class Meta:
         verbose_name = 'Поездка маршрутного листа'
         verbose_name_plural = 'Поездки маршрутных листов'
 
 class WHead(models.Model):
-    #id = models.AutoField('№', primary_key = True)
     date = models.DateTimeField('Дата')
     transport = models.ForeignKey(Transport, on_delete=models.SET_NULL, null=True)
 
     class Meta:
         verbose_name = 'Заголовок маршрутного листа'
         verbose_name_plural = 'Заголовки маршрутных листов'
+
+    def __str__(self):
+        return 'Шапка путевого листа №' + str(self.id)

@@ -9,15 +9,22 @@ from .forms import WRideForm, WHeadForm
 def index(request):
     error = ''
 
-    WRideFormset = modelformset_factory(WRide, WRideForm, fields=('time_in', 'time_out', 'route', 'expense_group', 'unit'), extra=2)
+    WRideFormset = modelformset_factory(WRide, WRideForm, fields=('time_in', 'time_out', 'route', 'expense_group', 'unit'), 
+                                        extra=2)
     
     if request.method == 'POST':
         head_form = WHeadForm(request.POST)
         ride_formset = WRideFormset(request.POST, queryset=WRide.objects.none())
         if head_form.is_valid() and ride_formset.is_valid():
-            print(head_form.cleaned_data)
-            instances = ride_formset.save()
-            instances = head_form.save()           
+            head_instance = head_form.save()  
+            head_id = head_instance.id
+
+            ride_instance = ride_formset.save(commit=False)
+            for i in ride_instance:
+                i.ride_id = head_id
+
+            ride_instance = ride_formset.save()
+
         else:
             error = "Форма заполнена неверно"
     
