@@ -9,13 +9,13 @@ from .forms import WRideForm, WHeadForm
 def index(request):
     error = ''
 
-    WRideFormset = modelformset_factory(WRide,WRideForm, fields=('time_in', 'time_out', 'route', 'expense_group', 'unit'), extra=2)
+    WRideFormset = modelformset_factory(WRide, WRideForm, fields=('time_in', 'time_out', 'route', 'expense_group', 'unit'), extra=2)
     
     if request.method == 'POST':
         head_form = WHeadForm(request.POST)
         ride_formset = WRideFormset(request.POST, queryset=WRide.objects.none())
-        if ride_formset.is_valid():
-
+        if head_from.is_valid() and ride_formset.is_valid():
+            print(head_form.cleaned_data)
             instances = ride_formset.save()
             instances = head_form.save()           
         else:
