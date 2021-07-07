@@ -14,7 +14,7 @@ def index(request):
     if request.method == 'POST':
         head_form = WHeadForm(request.POST)
         ride_formset = WRideFormset(request.POST, queryset=WRide.objects.none())
-        if head_from.is_valid() and ride_formset.is_valid():
+        if head_form.is_valid() and ride_formset.is_valid():
             print(head_form.cleaned_data)
             instances = ride_formset.save()
             instances = head_form.save()           
