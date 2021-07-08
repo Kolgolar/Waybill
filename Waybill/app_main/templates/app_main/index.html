@@ -1,6 +1,13 @@
 ﻿{% extends 'app_main/layout.html' %}
 
+{% load static %}
+
 {% block title %}Создание формы{% endblock %}
+
+{% block js %}
+    <script type="text/javascript" src={% static "app_main/js/jquery-3.6.0.min.js" %}></script>
+    <script type="text/javascript" src={% static "app_main/js/app_main-index.js" %}></script>
+{% endblock %}
 
 {% block content %}
     
