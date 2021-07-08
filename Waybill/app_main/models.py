@@ -14,7 +14,7 @@ class Transport(models.Model):
         verbose_name_plural = 'Справочник автотранспорта ГК "Альтекс"'
 
 class WRide(models.Model):
-    ride_id = models.PositiveIntegerField('№')
+    head_id = models.PositiveIntegerField('№')
     time_in = models.TimeField('Время прибытия')
     time_out = models.TimeField('Время убытия')
     route = models.CharField('Маршрут', max_length=5)
@@ -23,13 +23,14 @@ class WRide(models.Model):
 
     
     def __str__(self):
-        return 'Поездка №' + str(self.id) + ', относится к путевому листу №' + str(self.ride_id)    
+        return 'Поездка №' + str(self.id) + ', относится к путевому листу №' + str(self.head_id)    
 
     class Meta:
         verbose_name = 'Поездка маршрутного листа'
         verbose_name_plural = 'Поездки маршрутных листов'
 
 class WHead(models.Model):
+    creation_datetime = models.DateTimeField()
     date = models.DateTimeField('Дата')
     transport = models.ForeignKey(Transport, on_delete=models.SET_NULL, null=True)
 

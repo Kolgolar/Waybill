@@ -22,5 +22,6 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('', views.index)    
+    path('', views.index),    
+    path('print_form', views.print_form, name='print_form')    
 ]
