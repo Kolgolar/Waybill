@@ -51,6 +51,7 @@
     <Content Include="app_main\migrations\__pycache__\0002_auto_20210705_0852.cpython-37.pyc" />
     <Content Include="app_main\migrations\__pycache__\__init__.cpython-37.pyc" />
     <Content Include="app_main\static\app_main\css\app_main.css" />
+    <Content Include="app_main\templates\app_main\print_form.html" />
     <Content Include="app_main\templates\app_main\index.html" />
     <Content Include="app_main\templates\app_main\layout.html" />
     <Content Include="app_main\__pycache__\admin.cpython-37.pyc" />

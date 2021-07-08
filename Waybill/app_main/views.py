@@ -3,23 +3,25 @@ from django.http import HttpResponseRedirect
 from django.forms import modelformset_factory
 from .models import WRide, WHead
 from .forms import WRideForm, WHeadForm
+from django.utils.timezone import localtime
 
-import datetime
+from django.utils import timezone
+from datetime import timedelta
 
+formset_q = 1
 
 
 def index(request):
     error = ''
-
     WRideFormset = modelformset_factory(WRide, WRideForm, fields=('time_in', 'time_out', 'route', 'expense_group', 'unit'), 
-                                        extra=2)
+                                        extra=formset_q)
     
     if request.method == 'POST':
         head_form = WHeadForm(request.POST)
         ride_formset = WRideFormset(request.POST, queryset=WRide.objects.none())
         if head_form.is_valid() and ride_formset.is_valid():
             head_instance = head_form.save(commit=False)
-            head_instance.creation_datetime = datetime.datetime.now()
+            head_instance.creation_datetime = timezone.now() + timedelta(hours=24)
             head_instance = head_form.save()  
             head_id = head_instance.id
 
@@ -43,6 +45,24 @@ def index(request):
     }
 
     return render(request,'app_main/index.html', data)
+    
 
 def print_form(request):
     return render(request, 'app_main/print_form.html')
+
+
+def size_changing(request, value):
+    global formset_q
+    new_formset_q = formset_q + value
+    if (new_formset_q > 0 and new_formset_q < 5):
+        formset_q += value
+    else:
+        print('Некорректное значение строк!')
+    return redirect('main')
+
+
+def add_formset(request):
+    return size_changing(request, 1)
+
+def remove_formset(request):
+    return size_changing(request, -1)

@@ -22,6 +22,8 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('', views.index),    
+    path('', views.index, name='main'),    
+    path('add_formset', views.add_formset, name='add_formset'),    
+    path('remove_formset', views.remove_formset, name='remove_formset'),    
     path('print_form', views.print_form, name='print_form')    
 ]
