@@ -4,7 +4,8 @@
 }
 
 function removeForm() {
-    $("#paste_form_here").remove();
+    let formToDelete = $("#paste_form_here").children(':first');
+    formToDelete.remove();
 }
 
 
