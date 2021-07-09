@@ -1,5 +1,6 @@
 ﻿function addForm() {
     let formClone = $("#form_to_clone").clone();
+    formClone.find("input[type=text], textarea").val("");
     formClone.appendTo($("#paste_form_here"));
 }
 

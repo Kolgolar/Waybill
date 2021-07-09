@@ -17,8 +17,10 @@ def index(request):
                                         extra=1)
     
     if request.method == 'POST':
+        print(request)
         head_form = WHeadForm(request.POST)
         ride_formset = WRideFormset(request.POST, queryset=WRide.objects.none())
+        print(ride_formset)
         if head_form.is_valid() and ride_formset.is_valid():
             head_instance = head_form.save(commit=False)
             head_instance.creation_datetime = timezone.now() + timedelta(hours=24)
