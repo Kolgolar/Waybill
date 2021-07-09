@@ -14,7 +14,7 @@ formset_q = 1
 def index(request):
     error = ''
     WRideFormset = modelformset_factory(WRide, WRideForm, fields=('time_in', 'time_out', 'route', 'expense_group', 'unit'), 
-                                        extra=formset_q)
+                                        extra=1)
     
     if request.method == 'POST':
         head_form = WHeadForm(request.POST)
