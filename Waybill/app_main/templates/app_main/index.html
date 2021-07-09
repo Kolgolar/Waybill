@@ -17,11 +17,16 @@
             Дата: {{ head_form.date}}<br><br>
             Транспорт: {{ head_form.transport}}<br><br>
 
-            {{ ride_formset.as_p}}
+            <div id="form_to_clone">
+                {{ ride_formset.as_p}}
+            </div>
+            <div id="paste_form_here">
+
+            </div>
             <span>{{ error }}</span>
             <button class="btn btn-success" type="submit">Создать маршрутный лист</button>
-            <input type = "button" onclick="location.href='{% url 'add_formset' %}'" value = "Добавить" name="add">
-            <input type = "button" onclick="location.href='{% url 'remove_formset' %}'" value = "Удалить" name="remove">
+            <input id="b_add" type = "button" value = "Добавить" name="add">
+            <input id="d_remove" type = "button" value = "Удалить" name="remove">
         </div>        
     </form>
     
