@@ -4,7 +4,7 @@
 }
 
 function removeForm() {
-    $("#paste_form_here").last().remove();
+    $("#paste_form_here").remove();
 }
 
 
