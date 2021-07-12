@@ -19,15 +19,17 @@
 
             <div id="form_to_clone">
                 {{ ride_formset.as_p}}
-                <center><h1>---------------------------------</h1></center>
+                <hr />
             </div>
             <div id="paste_form_here">
 
             </div>
             <span>{{ error }}</span>
-            <button id="b_submit" class="btn btn-success" type="submit">Создать маршрутный лист</button>
-            <input id="b_add" type = "button" value = "Добавить" name="add">
-            <input id="b_remove" type = "button" value = "Удалить" name="remove">
+            <div class="buttons">
+                <button id="b_submit" class="btn btn-success" type="submit">Создать маршрутный лист</button>
+                <input id="b_add" type="button" value="Добавить" name="add">
+                <input id="b_remove" type="button" value="Удалить" name="remove">
+            </div>
         </div>        
     </form>
     
