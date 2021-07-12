@@ -1,20 +1,35 @@
 ﻿{% extends 'app_main/layout.html' %}
 
+{% load static %}
+
 {% block title %}Создание формы{% endblock %}
+
+{% block js %}
+    <script type="text/javascript" src={% static "app_main/js/jquery-3.6.0.min.js" %}></script>
+    <script type="text/javascript" src={% static "app_main/js/app_main-index.js" %}></script>
+{% endblock %}
 
 {% block content %}
     
     <form method="post">
-        <div class="wbform">
+        <div class="wbform" id="wbform">
             {% csrf_token %}            
             Дата: {{ head_form.date}}<br><br>
-            Транспорт: {{ head_form.transport}}<br><br>
+            <div id="wb_tr">Транспорт: {{ head_form.transport}}<br><br></div>
 
-            {{ ride_formset.as_p}}
+            <div id="form_to_clone">
+                {{ ride_formset.as_p}}
+                <hr />
+            </div>
+            <div id="paste_form_here">
+
+            </div>
             <span>{{ error }}</span>
-            <button class="btn btn-success" type="submit">Создать маршрутный лист</button>
-            <input type = "button" onclick="location.href='{% url 'add_formset' %}'" value = "Добавить" name="add">
-            <input type = "button" onclick="location.href='{% url 'remove_formset' %}'" value = "Удалить" name="remove">
+            <div class="buttons">
+                <button id="b_submit" class="btn btn-success" type="submit">Создать маршрутный лист</button>
+                <input id="b_add" type="button" value="Добавить" name="add">
+                <input id="b_remove" type="button" value="Удалить" name="remove">
+            </div>
         </div>        
     </form>
     
