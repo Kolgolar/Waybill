@@ -11,9 +11,52 @@ from django.utils import timezone
 from datetime import timedelta
 
 formset_q = 1
+HEAD_FIELDS_Q = 3
 
 @csrf_exempt
+
 def index(request):
+    if request.method == 'POST':
+        head_form = WHeadForm(request.POST)
+        ride_form = WRideForm(request.POST)
+        if (head_form.is_valid() and ride_form.is_valid()):
+            head_instance = head_form.save(commit=False)
+            head_instance.creation_datetime = timezone.now() + timedelta(hours=24)
+            head_instance = head_form.save()  
+            head_id = head_instance.id
+
+            val_q = len(request.POST.getlist("unit"))
+
+            ride_keys = list(request.POST.dict().keys())
+            #TODO: Remove fields in cycle
+            ride_keys.remove('csrfmiddlewaretoken')
+            ride_keys.remove('date_day')            
+            ride_keys.remove('date_month')
+            ride_keys.remove('date_year')
+            ride_keys.remove('transport')
+            #print(ride_keys)
+
+            for i in range(val_q):
+                new_ride_form = WRideForm(request.POST)
+                for key in ride_keys:
+                    instance = new_ride_form.save(commit=False)
+                    instance.key = request.POST.getlist(key)[i]                    
+                    print(("Form #{0}, field '{1}' = {2}").format(i, key, instance.key))
+                instance.head_id = head_id
+                instance = new_ride_form.save()
+        return redirect('print_form')
+    else:
+        head_form = WHeadForm()
+        ride_form = WRideForm()
+        data = {
+            'head_form' : head_form,
+            'ride_formset' : ride_form,
+        }
+
+        return render(request,'app_main/index.html', data)
+
+
+def index_old(request):
     error = ''
     WRideFormset = modelformset_factory(WRide, WRideForm, fields=('time_in', 'time_out', 'route', 'expense_group', 'unit'), 
                                         extra=1)
