@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.postgres.fields import ArrayField
 
 class Transport(models.Model):
     id = models.AutoField('№ п/п', primary_key = True)
@@ -15,8 +16,8 @@ class Transport(models.Model):
 
 class WRide(models.Model):
     head_id = models.PositiveIntegerField('№')
-    time_in = models.TimeField('Время прибытия')
-    time_out = models.TimeField('Время убытия')
+    time_in = models.TimeField('Время при прибытии')
+    time_out = models.TimeField('Время при убытии')
     route = models.CharField('Маршрут', max_length=5)
     expense_group = models.CharField('Группа расходов', max_length = 32)
     unit = models.CharField('Подразделение', max_length = 32)
@@ -39,4 +40,29 @@ class WHead(models.Model):
         verbose_name_plural = 'Заголовки маршрутных листов'
 
     def __str__(self):        
-        return 'Создано: {1} | {2}. Заголовок путевого листа №{0}'.format(self.id, self.creation_datetime.date(), self.creation_datetime.replace(microsecond=0).time())
+        return 'Создано: {1} | {2}. Заголовок путевого листа №{0}'.format(
+            self.id, self.creation_datetime.date(), self.creation_datetime.replace(microsecond=0).time())
+
+
+
+class Stop(models.Model):
+    name=models.CharField('Остановка', max_length = 32)
+
+    class Meta:
+        verbose_name = 'Остановка'
+        verbose_name_plural = 'Остановки'
+    
+    def __str__(self):
+        return name
+
+
+class Route(models.Model):
+    stops=models.ArrayField('Остановка', max_length = 32)
+
+    class Meta:
+        verbose_name = 'Остановка'
+        verbose_name_plural = 'Остановки'
+    
+    def __str__(self):
+        return name
+
