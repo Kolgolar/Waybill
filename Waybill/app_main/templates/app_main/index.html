@@ -12,7 +12,7 @@
 {% block content %}
     
     <form method="post">
-        <div class="wbform">
+        <div class="wbform" id="wbform">
             {% csrf_token %}            
             Дата: {{ head_form.date}}<br><br>
             Транспорт: {{ head_form.transport}}<br><br>
@@ -25,7 +25,7 @@
 
             </div>
             <span>{{ error }}</span>
-            <button class="btn btn-success" type="submit">Создать маршрутный лист</button>
+            <button id="b_submit" class="btn btn-success" type="submit">Создать маршрутный лист</button>
             <input id="b_add" type = "button" value = "Добавить" name="add">
             <input id="b_remove" type = "button" value = "Удалить" name="remove">
         </div>        

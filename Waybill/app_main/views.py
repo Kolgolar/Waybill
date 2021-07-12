@@ -4,22 +4,23 @@ from django.forms import modelformset_factory
 from .models import WRide, WHead
 from .forms import WRideForm, WHeadForm
 from django.utils.timezone import localtime
+from django.views.decorators.csrf import csrf_exempt
+
 
 from django.utils import timezone
 from datetime import timedelta
 
 formset_q = 1
 
-
+@csrf_exempt
 def index(request):
     error = ''
     WRideFormset = modelformset_factory(WRide, WRideForm, fields=('time_in', 'time_out', 'route', 'expense_group', 'unit'), 
                                         extra=1)
     
     if request.method == 'POST':
-        print(request)
         head_form = WHeadForm(request.POST)
-        ride_formset = WRideFormset(request.POST, queryset=WRide.objects.none())
+        ride_formset = WRideForm(request.POST)
         print(ride_formset)
         if head_form.is_valid() and ride_formset.is_valid():
             head_instance = head_form.save(commit=False)
@@ -28,8 +29,9 @@ def index(request):
             head_id = head_instance.id
 
             ride_instance = ride_formset.save(commit=False)
-            for i in ride_instance:
-                i.head_id = head_id
+            #for i in ride_instance:
+            #    i.head_id = head_id
+            ride_instance.head_id = head_id
 
             ride_instance = ride_formset.save()
             return redirect('print_form')
@@ -38,7 +40,7 @@ def index(request):
             error = "Форма заполнена неверно"
     
     else:
-        ride_formset = WRideFormset(queryset=WRide.objects.none())
+        ride_formset = WRideForm()
         head_form = WHeadForm()
     data = {
         'head_form' : head_form,
