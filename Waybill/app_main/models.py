@@ -57,7 +57,7 @@ class Stop(models.Model):
 
 
 class Route(models.Model):
-    stops=models.ArrayField('Остановка', max_length = 32)
+    stops=models.CharField('Остановка', max_length = 32)
 
     class Meta:
         verbose_name = 'Остановка'

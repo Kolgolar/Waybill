@@ -1,14 +1,4 @@
-.wbform {
-    font-size: 20px;
-    padding: 20px;
-    border: solid black;
-    border-radius: 20px;
-    background: #ffeca4;
-    width: 556px;
-    margin: 0 auto;
-    height: auto;
-    text-align: right;  
-}
+
 
 ul {
     list-style: none; /*убираем маркеры списка*/
