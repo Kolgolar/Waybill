@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.postgres.fields import ArrayField
 from django.contrib import admin
-from django.forms import CheckboxSelectMultiple, MultiWidget
+from django.forms import CheckboxSelectMultiple
 
 class Transport(models.Model):
     id = models.AutoField('№ п/п', primary_key = True)
@@ -74,4 +74,4 @@ class Route(models.Model):
 
 class AdminRouteModel(admin.ModelAdmin):
     formfield_overrides = {
-        models.ManyToManyField: {'widget': MultiWidget}}
+        models.ManyToManyField: {'widget': CheckboxSelectMultiple}}
