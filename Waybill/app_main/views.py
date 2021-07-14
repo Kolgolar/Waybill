@@ -68,6 +68,8 @@ def print_form(request):
 def get_transport_name(request):
     value = (request.GET.dict()["arg"])
     obj = Transport.objects.get(id = value)
-    data = getattr(obj, "mark", "uknown")
-    print(data)
+    
+    mark = getattr(obj, "mark", "uknown")
+    plate = getattr(obj, "plate", "uknown")
+    data = ("{0}   {1}").format(mark, plate.upper())
     return HttpResponse(data)

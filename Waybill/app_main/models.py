@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.postgres.fields import ArrayField
+from django.contrib import admin
+from django.forms import CheckboxSelectMultiple, MultiWidget
 
 class Transport(models.Model):
     id = models.AutoField('№ п/п', primary_key = True)
@@ -13,6 +15,7 @@ class Transport(models.Model):
     class Meta:
         verbose_name = 'Автотранспорт ГК "Альтекс"'
         verbose_name_plural = 'Справочник автотранспорта ГК "Альтекс"'
+
 
 class WRide(models.Model):
     head_id = models.PositiveIntegerField('№')
@@ -30,6 +33,7 @@ class WRide(models.Model):
         verbose_name = 'Поездка маршрутного листа'
         verbose_name_plural = 'Поездки маршрутных листов'
 
+
 class WHead(models.Model):
     creation_datetime = models.DateTimeField(null=True)
     date = models.DateTimeField('Дата')
@@ -46,23 +50,28 @@ class WHead(models.Model):
 
 
 class Stop(models.Model):
-    name=models.CharField('Остановка', max_length = 32)
+    name = models.CharField('Остановка', max_length = 32)
 
     class Meta:
         verbose_name = 'Остановка'
         verbose_name_plural = 'Остановки'
-    
+
     def __str__(self):
-        return name
+        return self.name
 
 
 class Route(models.Model):
-    stops=models.CharField('Остановка', max_length = 32)
+    num = models.CharField('Номер', max_length=5)
+    stops = models.ManyToManyField(Stop)
+
 
     class Meta:
-        verbose_name = 'Остановка'
-        verbose_name_plural = 'Остановки'
+        verbose_name = 'Маршрут'
+        verbose_name_plural = 'Маршруты'
     
-    def __str__(self):
-        return name
 
+
+
+class AdminRouteModel(admin.ModelAdmin):
+    formfield_overrides = {
+        models.ManyToManyField: {'widget': MultiWidget}}

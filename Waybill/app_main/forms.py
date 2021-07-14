@@ -24,6 +24,7 @@ class WHeadForm(ModelForm):
         fields = ['date', 'transport']
         widgets={
             'date' : forms.SelectDateWidget(attrs={'style' : 'width:100px'}),
-            'transport' : forms.Select(attrs={'style' : 'width:300px',
-                                              'id' : 'tr_id'}),
+            'transport' : forms.Select(attrs={'style' : 'width:80px',
+                                              'id' : 'tr_id',
+                                              'placeholder' : 'Номер ТС'}),
     }

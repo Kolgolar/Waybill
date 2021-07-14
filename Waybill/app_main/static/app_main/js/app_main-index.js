@@ -29,7 +29,7 @@ function setTrId(tr_id) {
             $("#tr_name").val(response);
         },
         error: function (response) {
-            $("#tr_name").val("Error");
+            $("#tr_name").val("");
         }
     });
     return tr_name;
