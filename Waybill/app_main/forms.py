@@ -8,13 +8,13 @@ class WRideForm(ModelForm):
         fields = ['time_in', 'time_out', 'route', 'expense_group', 'unit']
         
         widgets={            
-            'time_in' : forms.TimeInput(attrs={'style' : 'width:300px'}),
+            'time_in' : forms.TimeInput(attrs={'style' : 'width:50px'}),
             'time_out' : forms.TimeInput(attrs={
-                'style' : 'width:300px', 
+                'style' : 'width:50px', 
                 'placeholder' : 'Заполнится автоматически'}),
-            'route' : forms.TextInput(attrs={'style' : 'width:300px'}),
-            'expense_group' : forms.TextInput(attrs={'style' : 'width:300px'}),
-            'unit' : forms.TextInput(attrs={'style' : 'width:300px'}),
+            'route' : forms.TextInput(attrs={'style' : 'width:50px'}),
+            'expense_group' : forms.TextInput(attrs={'style' : 'width:50px'}),
+            'unit' : forms.TextInput(attrs={'style' : 'width:50'}),
         }
 
 
@@ -24,5 +24,7 @@ class WHeadForm(ModelForm):
         fields = ['date', 'transport']
         widgets={
             'date' : forms.SelectDateWidget(attrs={'style' : 'width:100px'}),
-            'transport' : forms.Select(attrs={'style' : 'width:300px'}),
+            'transport' : forms.Select(attrs={'style' : 'width:80px',
+                                              'id' : 'tr_id',
+                                              'placeholder' : 'Номер ТС'}),
     }

@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.forms import modelformset_factory
-from .models import WRide, WHead
+from .models import WRide, WHead, Transport
 from .forms import WRideForm, WHeadForm
 from django.utils.timezone import localtime
 from django.views.decorators.csrf import csrf_exempt
@@ -54,7 +54,7 @@ def index(request):
         ride_form = WRideForm()
         data = {
             'head_form' : head_form,
-            'ride_formset' : ride_form,
+            'ride_form' : ride_form,
             'error' : error
         }
 
@@ -63,3 +63,13 @@ def index(request):
 
 def print_form(request):
     return render(request, 'app_main/print_form.html')
+
+
+def get_transport_name(request):
+    value = (request.GET.dict()["arg"])
+    obj = Transport.objects.get(id = value)
+    
+    mark = getattr(obj, "mark", "uknown")
+    plate = getattr(obj, "plate", "uknown")
+    data = ("{0}   {1}").format(mark, plate.upper())
+    return HttpResponse(data)
