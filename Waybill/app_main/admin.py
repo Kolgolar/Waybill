@@ -7,8 +7,9 @@ admin.site.register(Transport)
 admin.site.register(Stop)
 
 
-class StopsInline(admin.StackedInline):
+class StopsInline(admin.TabularInline):
     model = InlineStop
+    extra = 0
 
 
 class RouteAdmin(admin.ModelAdmin):

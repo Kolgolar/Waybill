@@ -49,7 +49,7 @@ class WHead(models.Model):
 
 
 
-class Stop(models.Model):
+class Stop(models.Model): #Существует как просто список названий остановок
     name = models.CharField('Остановка', max_length = 32)    
 
     class Meta:
@@ -61,9 +61,15 @@ class Stop(models.Model):
 
 
 class Route(models.Model):
+    OUT = 'Вывоз'
+    IN = 'Завоз'
+    ROUTE_CHOICES = {(OUT, 'Вывоз'),
+                     (IN, 'Завоз')}
+
     num = models.CharField('Номер', max_length=5)
-    #stops = models.ForeignKey(Stop, on_delete=models.SET_NULL, null=True)
-    description = models.CharField('Описание', max_length=300, null=True)
+    description = models.TextField('Описание', max_length=300, null=True)
+    #reverse = models.BooleanField('С конца в начало')
+    route_type = models.CharField('Тип поездки', max_length = 5, choices = ROUTE_CHOICES, default = IN)
 
 
     class Meta:
@@ -74,9 +80,13 @@ class Route(models.Model):
         return self.num
 
     
-class InlineStop(models.Model):
-    name = models.ForeignKey(Stop, on_delete=models.SET_NULL, null = True)
-    route = models.ForeignKey(Route, on_delete=models.SET_NULL, null = True)
+class InlineStop(models.Model): #Те же остановки, но уже для отображения в маршруте
+    name = models.ForeignKey(Stop, on_delete=models.CASCADE, null = True)
+    route = models.ForeignKey(Route, on_delete=models.CASCADE, null = True)
+    time = models.TimeField('Время', null=True)
     class Meta:
         verbose_name = 'Остановка'
         verbose_name_plural = 'Остановки'
+
+    def __str__(self):
+        return str("")
