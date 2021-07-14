@@ -50,7 +50,7 @@ class WHead(models.Model):
 
 
 class Stop(models.Model):
-    name = models.CharField('Остановка', max_length = 32)
+    name = models.CharField('Остановка', max_length = 32)    
 
     class Meta:
         verbose_name = 'Остановка'
@@ -62,16 +62,21 @@ class Stop(models.Model):
 
 class Route(models.Model):
     num = models.CharField('Номер', max_length=5)
-    stops = models.ManyToManyField(Stop)
+    #stops = models.ForeignKey(Stop, on_delete=models.SET_NULL, null=True)
+    description = models.CharField('Описание', max_length=300, null=True)
 
 
     class Meta:
         verbose_name = 'Маршрут'
         verbose_name_plural = 'Маршруты'
+
+    def __str__(self):
+        return self.num
+
     
-
-
-
-class AdminRouteModel(admin.ModelAdmin):
-    formfield_overrides = {
-        models.ManyToManyField: {'widget': CheckboxSelectMultiple}}
+class InlineStop(models.Model):
+    name = models.ForeignKey(Stop, on_delete=models.SET_NULL, null = True)
+    route = models.ForeignKey(Route, on_delete=models.SET_NULL, null = True)
+    class Meta:
+        verbose_name = 'Остановка'
+        verbose_name_plural = 'Остановки'
