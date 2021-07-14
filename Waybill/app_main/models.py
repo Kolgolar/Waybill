@@ -66,7 +66,8 @@ class Route(models.Model):
     ROUTE_CHOICES = {(OUT, 'Вывоз'),
                      (IN, 'Завоз')}
 
-    num = models.CharField('Номер', max_length=5)
+    num_1 = models.PositiveSmallIntegerField("Индекс", null = False)
+    num_2 = models.PositiveSmallIntegerField("Подындекс", null = False)
     description = models.TextField('Описание', max_length=300, blank=True)
     #reverse = models.BooleanField('С конца в начало')
     route_type = models.CharField('Тип поездки', max_length = 5, choices = ROUTE_CHOICES, default = IN)
@@ -77,13 +78,13 @@ class Route(models.Model):
         verbose_name_plural = 'Маршруты'
 
     def __str__(self):
-        return self.num
+        return "{0}/{1}".format(self.num_1, self.num_2)
 
     
 class InlineStop(models.Model): #Те же остановки, но уже для отображения в маршруте
     name = models.ForeignKey(Stop, on_delete=models.CASCADE)
     route = models.ForeignKey(Route, on_delete=models.CASCADE)
-    time = models.TimeField('Время', blank = True)
+    time = models.TimeField('Время')
     class Meta:
         verbose_name = 'Остановка'
         verbose_name_plural = 'Остановки'
