@@ -35,6 +35,21 @@ function setTrId(tr_id) {
     return tr_name;
 }
 
+function setRouteDesc(tr_id) {
+    $.ajax({
+        type: "GET",
+        url: "get_route_desc",
+        data: { "arg": tr_id },
+        success: function (response) {
+            $("#route_desc").val(response);
+        },
+        error: function (response) {
+            $("#route_desc").val("");
+        }
+    });
+    return tr_name;
+}
+
 
 $(document).ready(function () {
     $("#b_add").click(addForm);
@@ -44,4 +59,10 @@ $(document).ready(function () {
         let tr_id = $("#tr_id").val();
         setTrId(tr_id);
     });
+
+    /*$("#tr_id").on("change", function () {
+        let tr_id = $("#tr_id").val();
+        setTrId(route_desc);
+    });
+    */
 });
