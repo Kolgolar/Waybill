@@ -10,6 +10,7 @@ admin.site.register(Stop)
 class StopsInline(admin.TabularInline):
     model = InlineStop
     extra = 0
+    min_num = 2
 
 
 class RouteAdmin(admin.ModelAdmin):
