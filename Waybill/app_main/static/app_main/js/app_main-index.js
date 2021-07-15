@@ -1,15 +1,22 @@
 ﻿let pasted_forms = [];
+const MAX_ROWS = 5
 
 function addForm() {
-    let formClone = $("#form_to_clone").clone();
-    formClone.find("input[type=text], textarea").val("");
+    if (pasted_forms.length + 1 < MAX_ROWS) {
+        let formClone = $("#form_to_clone").clone();
+        formClone.find("input[type=text], textarea").val("");
+        formClone.find('#route_id').prop('id', 'route_id' + parseInt(pasted_forms.length + 1));
+        formClone.find('#route_desc').prop('id', 'route_desc' + parseInt(pasted_forms.length + 1));
+        //TODO: Менять id у всех полей строки
 
-    if (pasted_forms.length > 0)
-        formClone.insertAfter(pasted_forms[0]);
+        if (pasted_forms.length > 0)
+            formClone.insertAfter(pasted_forms[0]);
+        else
+            formClone.insertAfter($("#paste_form_here"));
+        pasted_forms.unshift(formClone);
+    }
     else
-        formClone.insertAfter($("#paste_form_here"));    
-
-    pasted_forms.unshift(formClone);
+        alert(`Вы таблице не может быть больше ${MAX_ROWS} строк`);
 }
 
 function removeForm() {
@@ -29,22 +36,33 @@ function setTrId(tr_id) {
             $("#tr_name").val(response);
         },
         error: function (response) {
-            $("#tr_name").val("");
+            $("#tr_name").val("ТС не найдено!");
         }
     });
     return tr_name;
 }
 
-function setRouteDesc(route_id) {
+
+
+function setRouteDesc(route_id, el_id) {
+    let num;
+    if (el_id == "route_id")
+        num = "";
+    else
+        num = el_id.slice(-1);
+        
+    let rout_desc = $("#route_desc" + num);
+
+
     $.ajax({
         type: "GET",
         url: "get_route_desc",
         data: { "arg": route_id },
         success: function (response) {
-            $("#route_desc").val(response);
+            rout_desc.val(response);
         },
         error: function (response) {
-            $("#route_desc").val("");
+            rout_desc.val("");
         }
     });
     return tr_name;
@@ -60,9 +78,10 @@ $(document).ready(function () {
         setTrId(tr_id);
     });
 
-    $("#route_id").on("input", function () {
-        let route_id = $("#route_id").val();        
-        setRouteDesc(route_id);
+    $(document).on("input", ".route_id_class", function () {
+        let route_id = $(this).val();
+        let element_id = $(this).attr("id");
+        setRouteDesc(route_id, element_id);
     });
     
 });

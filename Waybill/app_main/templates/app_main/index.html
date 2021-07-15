@@ -30,7 +30,7 @@
 				__ООО ГК «Альтекс»</FONT></P>
 				<P CLASS="western" ALIGN=CENTER STYLE="margin-bottom: 0in"><BR>
 				</P>
-				<P CLASS="western" ALIGN=CENTER STYLE="margin-bottom: 0in"><FONT SIZE=4>Вид	транспортного средства <input id="tr_name" placeholder="[заполняется автоматически]" type = "text" size = 50> № {{ head_form.transport}}</FONT></P>
+				<P CLASS="western" ALIGN=CENTER STYLE="margin-bottom: 0in"><FONT SIZE=4>Вид	транспортного средства <input id="tr_name" placeholder="Заполняется автоматически" type = "text" size = 50> № {{ head_form.transport}}</FONT></P>
 				<P CLASS="western" ALIGN=CENTER STYLE="margin-bottom: 0in"><BR>
 				</P>
 				<TABLE WIDTH=1300 CELLPADDING=7 CELLSPACING=0 media="print">
@@ -161,12 +161,12 @@
 						<TD STYLE="border: 1px solid #00000a; padding-top: 0in; padding-bottom: 0in; padding-left: 0.08in; padding-right: 0.08in">
 							<P CLASS="western"><BR>
 								<!--Объект; Характер (описание) работ (услуг); Вид работ (услуг) № заказ-наряда и дефектной ведомости-->
-								{{ ride_form.route }}
-								<textarea id="route_desc" placeholder="[Заполняется автоматически при выборе маршрута]" type="text" cols="35" rows="3"></textarea>
+								{{ ride_form.route }}<br>
+								<textarea class="table_center_field" id="route_desc" placeholder="*Описание*. Заполняется автоматически при выборе маршрута" type="text" cols="35" rows="3"></textarea>
 							</P>
 						</TD>
 						<TD STYLE="border: 1px solid #00000a; padding-top: 0in; padding-bottom: 0in; padding-left: 0.08in; padding-right: 0.08in">
-							<P CLASS="western" ALIGN=CENTER><BR>
+							<P CLASS="western"><BR>
 								<!--Подразделение (цех, отдел, и т.п.)-->
 								{{ ride_form.unit}}
 							</P>

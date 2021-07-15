@@ -91,3 +91,25 @@ class InlineStop(models.Model): #Те же остановки, но уже дл�
 
     def __str__(self):
         return str("")
+
+
+class ExpenseGroup(models.Model):
+    name = models.CharField('Название', max_length = 32)  
+
+    class Meta:
+        verbose_name = 'Группа расходов'
+        verbose_name_plural = 'Группы расходов'
+
+    def __str__(self):
+        return self.name
+
+
+class Unit(models.Model):
+    name = models.CharField('Название', max_length = 32)  
+
+    class Meta:
+        verbose_name = 'Подразделение'
+        verbose_name_plural = 'Подразделения'
+
+    def __str__(self):
+        return self.name
