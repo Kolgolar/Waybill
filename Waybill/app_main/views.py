@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect, HttpResponse
 from django.forms import modelformset_factory
-from .models import WRide, WHead, Transport
+from .models import WRide, WHead, Transport, Route
 from .forms import WRideForm, WHeadForm
 from django.utils.timezone import localtime
 from django.views.decorators.csrf import csrf_exempt
@@ -64,12 +64,23 @@ def index(request):
 def print_form(request):
     return render(request, 'app_main/print_form.html')
 
-
+#TODO: Передавать на клиент отдельно марку и номер, создавать строку уже там
 def get_transport_name(request):
     value = (request.GET.dict()["arg"])
-    obj = Transport.objects.get(id = value)
-    
+    obj = Transport.objects.get(id = value)  
     mark = getattr(obj, "mark", "uknown")
     plate = getattr(obj, "plate", "uknown")
     data = ("{0}   {1}").format(mark, plate.upper())
     return HttpResponse(data)
+
+
+#TODO: Сделать проверку валидности строки на стороне клиента
+def get_route_desc(request):
+    value = (request.GET.dict()["arg"])
+    data = {}
+    if '/' in value and len(value) > 2:
+        idxs = value.split('/')
+        obj = Route.objects.all().filter(num_1 = idxs[0], num_2 = idxs[1]).first()
+        data = getattr(obj, "description", "")
+    return HttpResponse(data)
+       

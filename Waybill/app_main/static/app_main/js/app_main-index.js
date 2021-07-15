@@ -35,11 +35,11 @@ function setTrId(tr_id) {
     return tr_name;
 }
 
-function setRouteDesc(tr_id) {
+function setRouteDesc(route_id) {
     $.ajax({
         type: "GET",
         url: "get_route_desc",
-        data: { "arg": tr_id },
+        data: { "arg": route_id },
         success: function (response) {
             $("#route_desc").val(response);
         },
@@ -60,9 +60,9 @@ $(document).ready(function () {
         setTrId(tr_id);
     });
 
-    /*$("#tr_id").on("change", function () {
-        let tr_id = $("#tr_id").val();
-        setTrId(route_desc);
+    $("#route_id").on("input", function () {
+        let route_id = $("#route_id").val();        
+        setRouteDesc(route_id);
     });
-    */
+    
 });
