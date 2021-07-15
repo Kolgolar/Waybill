@@ -37,7 +37,7 @@ class WRide(models.Model):
 class WHead(models.Model):
     creation_datetime = models.DateTimeField(null=True)
     date = models.DateTimeField('Дата')
-    transport = models.ForeignKey(Transport, on_delete=models.SET_NULL, null=True)
+    transport = models.PositiveSmallIntegerField("Транспорт", null = False)
 
     class Meta:
         verbose_name = 'Заголовок маршрутного листа'

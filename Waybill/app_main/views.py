@@ -65,7 +65,7 @@ def print_form(request):
     return render(request, 'app_main/print_form.html')
 
 #TODO: Передавать на клиент отдельно марку и номер, создавать строку уже там
-def get_transport_name(request):
+def get_transport_name(request):    
     value = (request.GET.dict()["arg"])
     obj = Transport.objects.get(id = value)  
     mark = getattr(obj, "mark", "uknown")
@@ -76,11 +76,11 @@ def get_transport_name(request):
 
 #TODO: Сделать проверку валидности строки на стороне клиента
 def get_route_desc(request):
-    value = (request.GET.dict()["arg"])
     data = {}
+    value = (request.GET.dict()["arg"])
     if '/' in value and len(value) > 2:
         idxs = value.split('/')
         obj = Route.objects.all().filter(num_1 = idxs[0], num_2 = idxs[1]).first()
-        data = getattr(obj, "description", "")
+        data = getattr(obj, "description", "Маршрут не найден! Проверьте правильность ввода или введите своё описание.")
     return HttpResponse(data)
        

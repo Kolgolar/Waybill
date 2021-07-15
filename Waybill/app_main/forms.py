@@ -22,8 +22,7 @@ class ListTextWidget(forms.TextInput):
 
 class WRideForm(ModelForm):
     class Meta:
-        route_list = list(Route.objects.all())
-        print(route_list)
+        ROUTE_LIST = list(Route.objects.all())
 
         model = WRide
         fields = ['time_in', 'time_out', 'route', 'expense_group', 'unit']
@@ -34,7 +33,7 @@ class WRideForm(ModelForm):
                 'style' : 'width:50px', 
                 'placeholder' : 'Заполнится автоматически'}),
             #'route' : forms.TextInput(attrs={'style' : 'width:50px'}),
-            'route' : ListTextWidget(data_list=route_list, name="route_list", attrs={'style' : 'width:50px',
+            'route' : ListTextWidget(data_list=ROUTE_LIST, name="route_list", attrs={'style' : 'width:50px',
                                                                                      'id' : 'route_id'}),
             'expense_group' : forms.TextInput(attrs={'style' : 'width:50px'}),
             'unit' : forms.TextInput(attrs={'style' : 'width:50'}),
@@ -43,11 +42,12 @@ class WRideForm(ModelForm):
 
 class WHeadForm(ModelForm):
     class Meta:
+        TRANSPORT_LIST = list(Transport.objects.all())
         model = WHead
         fields = ['date', 'transport']
         widgets={
             'date' : forms.SelectDateWidget(attrs={'style' : 'width:100px'}),
-            'transport' : forms.Select(attrs={'style' : 'width:80px',
-                                              'id' : 'tr_id',
-                                              'placeholder' : 'Номер ТС'}),
+            'transport' : ListTextWidget(data_list=TRANSPORT_LIST, name="tr_list", attrs={'style' : 'width:80px',
+                                                                                      'id' : 'tr_id',
+                                                                                      'placeholder' : 'Номер ТС'}),
     }
