@@ -1,10 +1,6 @@
-<<<<<<< Updated upstream
-﻿let pasted_forms = [];
-=======
-﻿let pastedForms = [];
+let pastedForms = [];
 let timeDiffs = {};
 const MAX_ROWS = 5
->>>>>>> Stashed changes
 
 $(document).ready(function () {
     //$('#time_in').clockTimePicker();
@@ -41,13 +37,6 @@ $(document).ready(function () {
 
 
 function addForm() {
-<<<<<<< Updated upstream
-    let formClone = $("#form_to_clone").clone();
-    formClone.find("input[type=text], textarea").val("");
-
-    if (pasted_forms.length > 0)
-        formClone.insertAfter(pasted_forms[0]);
-=======
     if (pastedForms.length + 1 < MAX_ROWS) {
         let formClone = $("#form_to_clone").clone();
         formClone.find("input[type=text], textarea").val("");
@@ -65,11 +54,8 @@ function addForm() {
             formClone.insertAfter($("#paste_form_here"));
         pastedForms.unshift(formClone);
     }
->>>>>>> Stashed changes
     else
-        formClone.insertAfter($("#paste_form_here"));    
-
-    pasted_forms.unshift(formClone);
+        alert(`Вы таблице не может быть больше ${MAX_ROWS} строк`);
 }
 
 function removeForm() {
@@ -90,15 +76,12 @@ function setTrId(tr_id) {
             $("#tr_name").val(response);
         },
         error: function (response) {
-            $("#tr_name").val("");
+            $("#tr_name").val("ТС не найдено!");
         }
     });
     return tr_name;
 }
 
-<<<<<<< Updated upstream
-function setRouteDesc(route_id) {
-=======
 function getElementNum(el_id) {
     let num = el_id.slice(-1);
     if (!isNaN(num))
@@ -133,46 +116,20 @@ function setRouteDescAndTime(route_id, el_num) {
     let time_in = $("#time_in" + el_num);
     let time_out = $("#time_out" + el_num);
 
->>>>>>> Stashed changes
     $.ajax({
         type: "GET",
         url: "get_route_info",
         data: { "arg": route_id },
         success: function (response) {
-<<<<<<< Updated upstream
-            $("#route_desc").val(response);
-=======
             let data = $.parseJSON(response);
             rout_desc.val(data.description);
             time_in.val(toTimeFormat(data.time_in));
             time_out.val(toTimeFormat(data.time_out));
             timeDiffs[el_num] = data.time_out - data.time_in;
->>>>>>> Stashed changes
         },
         error: function (response) {
-            $("#route_desc").val("");
+            rout_desc.val("");
         }
     });
     return tr_name;
-<<<<<<< Updated upstream
 }
-
-
-$(document).ready(function () {
-    $("#b_add").click(addForm);
-    $("#b_remove").click(removeForm);
-
-    $("#tr_id").on("change", function () {
-        let tr_id = $("#tr_id").val();
-        setTrId(tr_id);
-    });
-
-    $("#route_id").on("input", function () {
-        let route_id = $("#route_id").val();        
-        setRouteDesc(route_id);
-    });
-    
-});
-=======
-}
->>>>>>> Stashed changes

@@ -67,34 +67,24 @@ def print_form(request):
     return render(request, 'app_main/print_form.html')
 
 #TODO: Передавать на клиент отдельно марку и номер, создавать строку уже там
-def get_transport_name(request):
+def get_transport_name(request):    
     value = (request.GET.dict()["arg"])
     obj = Transport.objects.get(id = value)  
-    mark = getattr(obj, "mark", "uknown")
-    plate = getattr(obj, "plate", "uknown")
+    mark = getattr(obj, "mark", "Not found")
+    plate = getattr(obj, "plate", "Not found")
     data = ("{0}   {1}").format(mark, plate.upper())
     return HttpResponse(data)
 
 
 #TODO: Сделать проверку валидности строки на стороне клиента
-<<<<<<< Updated upstream
-def get_route_desc(request):
-=======
 def get_route_info(request):
     data = {}
     description = ''
     time_in = 0
     time_out = 0
->>>>>>> Stashed changes
     value = (request.GET.dict()["arg"])
-    data = {}
     if '/' in value and len(value) > 2:
         idxs = value.split('/')
-<<<<<<< Updated upstream
-        obj = Route.objects.all().filter(num_1 = idxs[0], num_2 = idxs[1]).first()
-        data = getattr(obj, "description", "")
-    return HttpResponse(data)
-=======
         route_obj = Route.objects.all().filter(num_1 = idxs[0], num_2 = idxs[1]).first()
         description = getattr(route_obj, "description", "Маршрут не найден! Проверьте правильность ввода или введите своё описание.")
         
@@ -114,5 +104,4 @@ def get_route_info(request):
     }
     data_json = json.dumps(data)
     return HttpResponse(data_json)
->>>>>>> Stashed changes
        
