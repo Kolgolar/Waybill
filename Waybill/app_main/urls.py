@@ -25,5 +25,6 @@ urlpatterns = [
     path('', views.index, name='main'),            
     path('print_form', views.print_form, name='print_form'),    
     path('get_transport_name', views.get_transport_name, name='get_transport_name'),
-    path('get_route_info', views.get_route_info, name='get_route_info')    
+    path('get_route_info', views.get_route_info, name='get_route_info'),    
+    path(r'^print_page/(?P<id>\d+)/$', views.print_page, name='print_page')    
 ]

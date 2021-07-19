@@ -49,8 +49,10 @@ def index(request):
         else:
             error = "Форма заполнена неверно!"
 
+        #return redirect('print_page')
 
-        return redirect('print_form')
+        return redirect('print_page/' + str(head_id))
+    
     else:
         head_form = WHeadForm()
         ride_form = WRideForm()
@@ -62,6 +64,11 @@ def index(request):
 
         return render(request,'app_main/index.html', data)
     
+
+def print_page(request, id):
+    print(id)
+    return render(request, 'app_main/print_page.html')
+
 
 def print_form(request):
     return render(request, 'app_main/print_form.html')
