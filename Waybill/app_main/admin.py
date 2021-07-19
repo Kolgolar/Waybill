@@ -5,6 +5,12 @@ admin.site.register(WRide)
 admin.site.register(WHead)
 admin.site.register(Transport)
 admin.site.register(Stop)
+<<<<<<< Updated upstream
+=======
+admin.site.register(ExpenseGroup)
+admin.site.register(Unit)
+#admin.site.register(InlineStop)
+>>>>>>> Stashed changes
 
 
 class StopsInline(admin.TabularInline):

@@ -86,8 +86,34 @@ class InlineStop(models.Model): #Те же остановки, но уже дл�
     route = models.ForeignKey(Route, on_delete=models.CASCADE)
     time = models.TimeField('Время')
     class Meta:
-        verbose_name = 'Остановка'
-        verbose_name_plural = 'Остановки'
+        verbose_name = 'Инлайн'
+        verbose_name_plural = 'Инлайн'
 
     def __str__(self):
+<<<<<<< Updated upstream
         return str("")
+=======
+        return str(self.name)
+
+
+class ExpenseGroup(models.Model):
+    name = models.CharField('Название', max_length = 32)  
+
+    class Meta:
+        verbose_name = 'Группа расходов'
+        verbose_name_plural = 'Группы расходов'
+
+    def __str__(self):
+        return self.name
+
+
+class Unit(models.Model):
+    name = models.CharField('Название', max_length = 32)  
+
+    class Meta:
+        verbose_name = 'Подразделение'
+        verbose_name_plural = 'Подразделения'
+
+    def __str__(self):
+        return self.name
+>>>>>>> Stashed changes

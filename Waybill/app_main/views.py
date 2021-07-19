@@ -1,10 +1,12 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect, HttpResponse
 from django.forms import modelformset_factory
-from .models import WRide, WHead, Transport, Route
+from .models import WRide, WHead, Transport, Route, InlineStop
 from .forms import WRideForm, WHeadForm
 from django.utils.timezone import localtime
 from django.views.decorators.csrf import csrf_exempt
+import json
+import datetime
 
 
 from django.utils import timezone
@@ -75,12 +77,42 @@ def get_transport_name(request):
 
 
 #TODO: Сделать проверку валидности строки на стороне клиента
+<<<<<<< Updated upstream
 def get_route_desc(request):
+=======
+def get_route_info(request):
+    data = {}
+    description = ''
+    time_in = 0
+    time_out = 0
+>>>>>>> Stashed changes
     value = (request.GET.dict()["arg"])
     data = {}
     if '/' in value and len(value) > 2:
         idxs = value.split('/')
+<<<<<<< Updated upstream
         obj = Route.objects.all().filter(num_1 = idxs[0], num_2 = idxs[1]).first()
         data = getattr(obj, "description", "")
     return HttpResponse(data)
+=======
+        route_obj = Route.objects.all().filter(num_1 = idxs[0], num_2 = idxs[1]).first()
+        description = getattr(route_obj, "description", "Маршрут не найден! Проверьте правильность ввода или введите своё описание.")
+        
+        time_in_obj = InlineStop.objects.all().filter(route_id = route_obj.id).first()
+        t = getattr(time_in_obj, "time", 303)
+        time_in = t.hour * 60 + t.minute
+
+        time_out_obj = InlineStop.objects.all().filter(route_id = route_obj.id).last()
+        t = getattr(time_out_obj, "time", 404)
+        print(t)
+        time_out = t.hour * 60 + t.minute
+    
+    data = {
+        'description' : description,
+        'time_in' : time_in,
+        'time_out' : time_out
+    }
+    data_json = json.dumps(data)
+    return HttpResponse(data_json)
+>>>>>>> Stashed changes
        

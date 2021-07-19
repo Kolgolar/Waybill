@@ -29,6 +29,7 @@ class WRideForm(ModelForm):
         fields = ['time_in', 'time_out', 'route', 'expense_group', 'unit']
         
         widgets={            
+<<<<<<< Updated upstream
             'time_in' : forms.TimeInput(attrs={'style' : 'width:50px'}),
             'time_out' : forms.TimeInput(attrs={
                 'style' : 'width:50px', 
@@ -38,6 +39,35 @@ class WRideForm(ModelForm):
                                                                                      'id' : 'route_id'}),
             'expense_group' : forms.TextInput(attrs={'style' : 'width:50px'}),
             'unit' : forms.TextInput(attrs={'style' : 'width:50'}),
+=======
+            'time_in' : forms.TimeInput(attrs={
+                                            'style' : 'width:50px',
+                                            'class' : 'time_in_class',
+                                            'id' : 'time_in'}),
+
+            'time_out' : forms.TimeInput(attrs={
+                                            'style' : 'width:50px', 
+                                            'placeholder' : 'Заполнится автоматически',
+                                            'class' : 'time_out_class',
+                                            'id' : 'time_out'}),
+
+            'route' : ListTextWidget(data_list=ROUTE_LIST, name="route_list", 
+                                         attrs={
+                                            'style' : 'width:130px',
+                                            'id' : 'route_id',
+                                            'placeholder' : '№ маршрута',
+                                            'class' : 'route_id_class'}),
+
+            'expense_group' : ListTextWidget(data_list=EXPENSE_GROUP_LIST, name="expense_group_list",
+                                        attrs={
+                                            'style' : 'width:80px',
+                                            'class' : 'table_center_field'}),
+            
+            'unit' : ListTextWidget(data_list=UNIT_LIST, name="unit_list",
+                                        attrs={
+                                            'style' : 'width:50',
+                                            'class' : 'table_center_field'}),
+>>>>>>> Stashed changes
         }
 
 

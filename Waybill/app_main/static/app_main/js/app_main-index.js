@@ -1,11 +1,71 @@
+<<<<<<< Updated upstream
 ﻿let pasted_forms = [];
+=======
+﻿let pastedForms = [];
+let timeDiffs = {};
+const MAX_ROWS = 5
+>>>>>>> Stashed changes
+
+$(document).ready(function () {
+    //$('#time_in').clockTimePicker();
+    //$('#time_out').clockTimePicker();
+    $("#b_add").click(addForm);
+    $("#b_remove").click(removeForm);
+
+    $("#tr_id").on("change", function () {
+        let tr_id = $("#tr_id").val();
+        setTrId(tr_id);
+    });
+
+    $(document).on("change", ".time_in_class", function () {
+        let num = getElementNum($(this).attr("id"));
+        let timeInVal = $("#time_in" + num).val();
+
+
+        let new_val = toMinutes(timeInVal) + timeDiffs[num];
+        new_val = toTimeFormat(new_val);
+        $("#time_out" + num).val(new_val);
+    });
+
+    $(document).on("change", ".time_out_class", function () {
+        let timeOutVal = $("#time_out" + num).val();
+    });
+
+    $(document).on("input", ".route_id_class", function () {
+        let route_id = $(this).val();
+        let element_id = $(this).attr("id");
+        setRouteDescAndTime(route_id, getElementNum(element_id));
+    });
+
+});
+
 
 function addForm() {
+<<<<<<< Updated upstream
     let formClone = $("#form_to_clone").clone();
     formClone.find("input[type=text], textarea").val("");
 
     if (pasted_forms.length > 0)
         formClone.insertAfter(pasted_forms[0]);
+=======
+    if (pastedForms.length + 1 < MAX_ROWS) {
+        let formClone = $("#form_to_clone").clone();
+        formClone.find("input[type=text], textarea").val("");
+
+        let idsToRename = ['route_id', 'route_desc', 'time_in', 'time_out'];
+
+        // Добавляем к id выбранных элементов номер, чтобы избежать дубликатов и иметь возможность обращаться к ним в будущем
+        idsToRename.forEach(function (item, i, idsToRename) {
+            formClone.find('#' + item).prop('id', item + parseInt(pastedForms.length + 1));
+        });
+
+        if (pastedForms.length > 0)
+            formClone.insertAfter(pastedForms[0]);
+        else
+            formClone.insertAfter($("#paste_form_here"));
+        pastedForms.unshift(formClone);
+    }
+>>>>>>> Stashed changes
     else
         formClone.insertAfter($("#paste_form_here"));    
 
@@ -13,10 +73,11 @@ function addForm() {
 }
 
 function removeForm() {
-    if (pasted_forms.length > 0) {
-        let formToDelete = pasted_forms[0];
+    if (pastedForms.length > 0) {
+        let formToDelete = pastedForms[0];
         formToDelete.remove()
-        pasted_forms.splice(0, 1);
+        delete timeDiffs[pastedForms.length + 1];
+        pastedForms.splice(0, 1);
     }
 }
 
@@ -35,19 +96,65 @@ function setTrId(tr_id) {
     return tr_name;
 }
 
+<<<<<<< Updated upstream
 function setRouteDesc(route_id) {
+=======
+function getElementNum(el_id) {
+    let num = el_id.slice(-1);
+    if (!isNaN(num))
+        return num;
+    else
+        return "";
+}
+
+
+function toTimeFormat(minutes) {
+    if (minutes > 0) {
+        let hoursPart = (minutes - minutes % 60) / 60;
+        let minutesPart = minutes % 60;
+        let zeroBeforeMinutes = '';
+        if (minutesPart < 10)
+            zeroBeforeMinutes = '0';
+        return `${hoursPart}:${zeroBeforeMinutes}${minutesPart}`;
+    }
+    else
+        return '';
+}
+
+function toMinutes(time) {
+    let hoursInMins = time.split(':');
+    let minutes = parseInt(hoursInMins[0]) * 60 + parseInt(hoursInMins[1]);
+    return minutes;
+}
+
+
+function setRouteDescAndTime(route_id, el_num) {
+    let rout_desc = $("#route_desc" + el_num);
+    let time_in = $("#time_in" + el_num);
+    let time_out = $("#time_out" + el_num);
+
+>>>>>>> Stashed changes
     $.ajax({
         type: "GET",
-        url: "get_route_desc",
+        url: "get_route_info",
         data: { "arg": route_id },
         success: function (response) {
+<<<<<<< Updated upstream
             $("#route_desc").val(response);
+=======
+            let data = $.parseJSON(response);
+            rout_desc.val(data.description);
+            time_in.val(toTimeFormat(data.time_in));
+            time_out.val(toTimeFormat(data.time_out));
+            timeDiffs[el_num] = data.time_out - data.time_in;
+>>>>>>> Stashed changes
         },
         error: function (response) {
             $("#route_desc").val("");
         }
     });
     return tr_name;
+<<<<<<< Updated upstream
 }
 
 
@@ -66,3 +173,6 @@ $(document).ready(function () {
     });
     
 });
+=======
+}
+>>>>>>> Stashed changes
