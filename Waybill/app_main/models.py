@@ -86,8 +86,8 @@ class InlineStop(models.Model): #Те же остановки, но уже дл�
     route = models.ForeignKey(Route, on_delete=models.CASCADE)
     time = models.TimeField('Время')
     class Meta:
-        verbose_name = 'Инлайн'
-        verbose_name_plural = 'Инлайн'
+        verbose_name = 'Остановки'
+        verbose_name_plural = 'Остановки'
 
     def __str__(self):
         return str(self.name)

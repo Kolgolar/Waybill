@@ -53,10 +53,11 @@
     <Content Include="app_main\static\app_main\css\app_main.css" />
     <Content Include="app_main\static\app_main\js\jquery-3.6.0.min.js" />
     <Content Include="app_main\static\app_main\js\app_main-index.js" />
-    <Content Include="app_main\templates\app_main\index - Copy.html" />
     <Content Include="app_main\templates\app_main\index.html" />
     <Content Include="app_main\templates\app_main\print_form.html" />
     <Content Include="app_main\templates\app_main\layout.html" />
+    <Content Include="app_main\templates\app_main\print_page - Copy.html" />
+    <Content Include="app_main\templates\app_main\print_page.html" />
     <Content Include="app_main\__pycache__\admin.cpython-37.pyc" />
     <Content Include="app_main\__pycache__\apps.cpython-37.pyc" />
     <Content Include="app_main\__pycache__\forms.cpython-37.pyc" />

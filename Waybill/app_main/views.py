@@ -18,6 +18,7 @@ from datetime import timedelta
 def index(request):
     error = ''
     HEAD_FIELDS_Q = 3
+    print(request.method)
     if request.method == 'POST':
         head_form = WHeadForm(request.POST)
         ride_form = WRideForm(request.POST)
@@ -29,27 +30,27 @@ def index(request):
 
             val_q = len(request.POST.getlist("unit"))
 
-            ride_keys = list(request.POST.dict().keys())
+            all_keys = list(request.POST.dict().keys())
             #TODO: Remove fields and make cycle
-            ride_keys.remove('csrfmiddlewaretoken')
-            ride_keys.remove('date_day')            
-            ride_keys.remove('date_month')
-            ride_keys.remove('date_year')
-            ride_keys.remove('transport')
+            all_keys.remove('csrfmiddlewaretoken')
+            all_keys.remove('date_day')            
+            all_keys.remove('date_month')
+            all_keys.remove('date_year')
+            all_keys.remove('transport')
+            ride_keys = all_keys
             #print(ride_keys)
 
             for i in range(val_q):
-                new_ride_form = WRideForm(request.POST)
+                new_ride = WRide()
+                setattr(new_ride, 'head_id', head_id)
                 for key in ride_keys:
-                    instance = new_ride_form.save(commit=False)
-                    instance.key = request.POST.getlist(key)[i]                    
-                    print(("Form #{0}, field '{1}' = {2}").format(i, key, instance.key))
-                instance.head_id = head_id
-                instance = new_ride_form.save()
+                    setattr(new_ride, key, request.POST.getlist(key)[i])
+                    #print(("Form #{0}, field '{1}' = {2}").format(i, key, new_ride.key)) #Не работает
+                new_ride.save()
         else:
             error = "Форма заполнена неверно!"
 
-        #return redirect('print_page')
+        #return redirect('print_form')
 
         return redirect('print_page/' + str(head_id))
     
@@ -65,22 +66,41 @@ def index(request):
         return render(request,'app_main/index.html', data)
     
 
-def print_page(request, id):
-    print(id)
-    return render(request, 'app_main/print_page.html')
+def print_page(request, form_id):
+    head = WHead.objects.get(id = form_id)
+    rides = WRide.objects.all().filter(head_id = form_id) #Получает QuerySet поездок, относящихся к одному листу
+    for r in rides:
+        route_name = getattr(r, 'route', 'ERROR: Route not found!')
+        description = get_rout_attrs(route_name)['description']
+        r.desc = description
+        print(r)
+   
+    data = {
+        'date' : head.date,
+        'transport' : get_tr_data(head.transport),
+        'rides' : rides,
+    }
+
+    return render(request, 'app_main/print_page.html', data)
 
 
 def print_form(request):
     return render(request, 'app_main/print_form.html')
 
+
 #TODO: Передавать на клиент отдельно марку и номер, создавать строку уже там
-def get_transport_name(request):    
-    value = (request.GET.dict()["arg"])
-    obj = Transport.objects.get(id = value)  
+def get_transport_name(request): # Вызывается через JQuery
+    id = (request.GET.dict()["arg"])
+    data = get_tr_data(id)
+    return HttpResponse(data)
+
+
+def get_tr_data(id_need): # Собственно логика получения номера и имени ТС
+    obj = Transport.objects.get(id = id_need)  
     mark = getattr(obj, "mark", "Not found")
     plate = getattr(obj, "plate", "Not found")
     data = ("{0}   {1}").format(mark, plate.upper())
-    return HttpResponse(data)
+    return data
 
 
 #TODO: Сделать проверку валидности строки на стороне клиента
@@ -91,10 +111,12 @@ def get_route_info(request):
     time_out = 0
     value = (request.GET.dict()["arg"])
     if '/' in value and len(value) > 2:
-        idxs = value.split('/')
-        route_obj = Route.objects.all().filter(num_1 = idxs[0], num_2 = idxs[1]).first()
-        description = getattr(route_obj, "description", "Маршрут не найден! Проверьте правильность ввода или введите своё описание.")
-        
+
+        attr = get_rout_attrs(value)
+        idxs = attr['idxs']
+        route_obj = attr['route_obj']
+        description = attr['description']      
+
         time_in_obj = InlineStop.objects.all().filter(route_id = route_obj.id).first()
         t = getattr(time_in_obj, "time", 303)
         time_in = t.hour * 60 + t.minute
@@ -111,4 +133,10 @@ def get_route_info(request):
     }
     data_json = json.dumps(data)
     return HttpResponse(data_json)
+
+def get_rout_attrs(value):
+    idxs = value.split('/')
+    route_obj = Route.objects.all().filter(num_1 = idxs[0], num_2 = idxs[1]).first()
+    description = getattr(route_obj, "description", "Маршрут не найден! Проверьте правильность ввода или введите своё описание.")
+    return {'idxs' : idxs, 'route_obj' : route_obj, 'description' : description}
        

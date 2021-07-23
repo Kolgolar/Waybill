@@ -1,5 +1,3 @@
-
-
 ul {
     list-style: none; /*убираем маркеры списка*/
     margin: 0; /*убираем верхнее и нижнее поле, равное 1em*/
@@ -21,23 +19,13 @@ li {
     padding: 20px;
 }
 
-hr {
-    border:solid black;
-    border-width: 2px;
+#application {
+    text-align: right;
 }
 
-.print-wbform {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    margin-right: -50%;
-    transform: translate(-50%, -50%);
-    margin: 0;
-    padding: 4px;
+@media print {
+    .no_print, .no_print * {
+        display: none !important;
+    }
 }
 
-.print-wbform li {
-    display: inline;
-    margin-right: 5px; /* ќтступ слева */
-    padding: 3px; /* ѕол€ вокруг текста */
-}

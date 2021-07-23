@@ -50,12 +50,12 @@ class WRideForm(ModelForm):
 
             'expense_group' : ListTextWidget(data_list=EXPENSE_GROUP_LIST, name="expense_group_list",
                                         attrs={
-                                            'style' : 'width:80px',
+                                            'style' : 'width:200px',
                                             'class' : 'table_center_field'}),
             
             'unit' : ListTextWidget(data_list=UNIT_LIST, name="unit_list",
                                         attrs={
-                                            'style' : 'width:50',
+                                            'style' : 'width:200',
                                             'class' : 'table_center_field'}),
         }
 

@@ -6,16 +6,15 @@
 
 {% block js %}
 <script type="text/javascript" src={% static "app_main/js/jquery-3.6.0.min.js" %}></script>
-<script type="text/javascript" src={% static "app_main/js/app_main-index.js" %}></script>
+<script type="text/javascript" src={% static "app_main/js/app_main-print.js" %}></script>
 {% endblock %}
 
 {% block content %}
 
 
-<center>
-    <form method="post" id="wbform">
+<center id="print_table">
         {% csrf_token %}
-        <P CLASS="western" ALIGN=CENTER STYLE="margin-bottom: 0in">
+        <P CLASS="western" id="application" STYLE="margin-bottom: 0in">
             Приложение
             № 1 к приказу № 505 от 31.08.2012
         </P>
@@ -34,7 +33,7 @@
         <P CLASS="western" ALIGN=CENTER STYLE="margin-bottom: 0in">
             <BR>
         </P>
-        <P CLASS="western" ALIGN=CENTER STYLE="margin-bottom: 0in"><FONT SIZE=4>На {{ head_form.date}}</FONT></P>
+        <P CLASS="western" ALIGN=CENTER STYLE="margin-bottom: 0in"><FONT SIZE=4>На {{ date }} </FONT></P>
         <P CLASS="western" ALIGN=CENTER STYLE="margin-bottom: 0in">
             <FONT SIZE=4>
                 Исполнитель
@@ -44,7 +43,7 @@
         <P CLASS="western" ALIGN=CENTER STYLE="margin-bottom: 0in">
             <BR>
         </P>
-        <P CLASS="western" ALIGN=CENTER STYLE="margin-bottom: 0in"><FONT SIZE=4>Вид	транспортного средства <input id="tr_name" placeholder="Заполняется автоматически" type="text" size=50> № {{ head_form.transport}}</FONT></P>
+        <P CLASS="western" ALIGN=CENTER STYLE="margin-bottom: 0in"><FONT SIZE=4>Вид	транспортного средства {{ transport }}</FONT></P>
         <P CLASS="western" ALIGN=CENTER STYLE="margin-bottom: 0in">
             <BR>
         </P>
@@ -146,6 +145,7 @@
                 </TD>
             </TR>
 
+            {% for r in rides %}
             <TR VALIGN=TOP id="form_to_clone">
                 <TD HEIGHT=62 STYLE="border: 1px solid #00000a; padding-top: 0in; padding-bottom: 0in; padding-left: 0.08in; padding-right: 0.08in">
                     <P CLASS="western">
@@ -157,14 +157,14 @@
                     <P CLASS="western">
                         <BR>
                         <!--Время при прибытии-->
-                        {{ ride_form.time_in}}
+                        {{ r.time_in}}
                     </P>
                 </TD>
                 <TD STYLE="border: 1px solid #00000a; padding-top: 0in; padding-bottom: 0in; padding-left: 0.08in; padding-right: 0.08in">
                     <P CLASS="western">
                         <BR>
                         <!--Время при убытии-->
-                        {{ ride_form.time_out}}
+                        {{ r.time_out}}
                     </P>
                 </TD>
                 <TD STYLE="border: 1px solid #00000a; padding-top: 0in; padding-bottom: 0in; padding-left: 0.08in; padding-right: 0.08in">
@@ -183,22 +183,21 @@
                     <P CLASS="western">
                         <BR>
                         <!--Группа расходов-->
-                        {{ ride_form.expense_group}}
+                        {{ r.expense_group}}
                     </P>
                 </TD>
                 <TD STYLE="border: 1px solid #00000a; padding-top: 0in; padding-bottom: 0in; padding-left: 0.08in; padding-right: 0.08in">
                     <P CLASS="western">
                         <BR>
                         <!--Объект; Характер (описание) работ (услуг); Вид работ (услуг) № заказ-наряда и дефектной ведомости-->
-                        {{ ride_form.route }}<br>
-                        <textarea class="table_center_field" id="route_desc" placeholder="*Описание*. Заполняется автоматически при выборе маршрута" type="text" cols="35" rows="3"></textarea>
+                        {{ r.desc }}<br>                        
                     </P>
                 </TD>
                 <TD STYLE="border: 1px solid #00000a; padding-top: 0in; padding-bottom: 0in; padding-left: 0.08in; padding-right: 0.08in">
                     <P CLASS="western">
                         <BR>
                         <!--Подразделение (цех, отдел, и т.п.)-->
-                        {{ ride_form.unit}}
+                        {{ r.unit}}
                     </P>
                 </TD>
                 <TD STYLE="border: 1px solid #00000a; padding-top: 0in; padding-bottom: 0in; padding-left: 0.08in; padding-right: 0.08in">
@@ -219,16 +218,16 @@
                     </P>
                 </TD>
             </TR>
+            {% endfor %}
             <tr id="paste_form_here"></tr>
         </TABLE>
-        <div class="buttons">
+        <div class="buttons no_print">
             <ul>
-                <li><button id="b_submit" class="btn btn-success" type="submit">Создать маршрутный лист</button></li>
-                <li><input id="b_add" type="button" value="+" name="add"></li>
-                <li><input id="b_remove" type="button" value="-" name="remove"></li>
+                <li><button id="b_print" class="btn btn-success">Печать</button></li>
+                <li><a href="{% url 'main' %}" class="btn btn-primary">На главную</a></li>
+                <li><button id="b_pdf" class="btn btn-success">Скачать как PDF</button></li>
             </ul>
         </div>
-    </form>
 </center>
 
 
