@@ -197,7 +197,9 @@
                     <P CLASS="western">
                         <BR>
                         <!--Подразделение (цех, отдел, и т.п.)-->
+                        <center>
                         {{ r.unit}}
+                        </center>
                     </P>
                 </TD>
                 <TD STYLE="border: 1px solid #00000a; padding-top: 0in; padding-bottom: 0in; padding-left: 0.08in; padding-right: 0.08in">
@@ -225,7 +227,7 @@
             <ul>
                 <li><button id="b_print" class="btn btn-success">Печать</button></li>
                 <li><a href="{% url 'main' %}" class="btn btn-primary">На главную</a></li>
-                <li><button id="b_pdf" class="btn btn-success">Скачать как PDF</button></li>
+                
             </ul>
         </div>
 </center>
