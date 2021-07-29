@@ -33,11 +33,12 @@ class WRideForm(ModelForm):
             'time_in' : forms.TimeInput(attrs={
                                             'style' : 'width:50px',
                                             'class' : 'time_in_class',
+                                            'placeholder' : 'Авто',
                                             'id' : 'time_in'}),
 
             'time_out' : forms.TimeInput(attrs={
                                             'style' : 'width:50px', 
-                                            'placeholder' : 'Заполнится автоматически',
+                                            'placeholder' : 'Авто',
                                             'class' : 'time_out_class',
                                             'id' : 'time_out'}),
 
