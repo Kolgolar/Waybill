@@ -3,8 +3,6 @@ let timeDiffs = {};
 const MAX_ROWS = 5
 
 $(document).ready(function () {
-    //$('#time_in').clockTimePicker();
-    //$('#time_out').clockTimePicker();
     $("#b_add").click(addForm);
     $("#b_remove").click(removeForm);
 
@@ -39,23 +37,29 @@ $(document).ready(function () {
 function addForm() {
     if (pastedForms.length + 1 < MAX_ROWS) {
         let formClone = $("#form_to_clone").clone();
-        formClone.find("input[type=text], textarea").val("");
-
-        let idsToRename = ['route_id', 'route_desc', 'time_in', 'time_out'];
+        formClone.find("input[type=text], textarea").val(""); // Очищаем все поля скопированной формы
+        let idsToRename = ['ride_head', 'route_id', 'route_desc', 'time_in', 'time_out'];
 
         // Добавляем к id выбранных элементов номер, чтобы избежать дубликатов и иметь возможность обращаться к ним в будущем
+        let idAddition = parseInt(pastedForms.length + 1);
         idsToRename.forEach(function (item, i, idsToRename) {
-            formClone.find('#' + item).prop('id', item + parseInt(pastedForms.length + 1));
+            formClone.find('#' + item).prop('id', item + idAddition);
         });
 
         if (pastedForms.length > 0)
             formClone.insertAfter(pastedForms[0]);
         else
             formClone.insertAfter($("#paste_form_here"));
+
+        //Меняем текст заголовка у каждой поездки:
+        ride_head_text = document.getElementById('ride_head').textContent;
+        document.getElementById('ride_head' + idAddition).textContent = ride_head_text.substring(0, ride_head_text.length - 2) + ':' + parseInt(idAddition + 1);
+
+        
         pastedForms.unshift(formClone);
     }
     else
-        alert(`Вы таблице не может быть больше ${MAX_ROWS} строк`);
+        alert(`В маршрутном листе не может быть больше ${MAX_ROWS} поездок`);
 }
 
 function removeForm() {

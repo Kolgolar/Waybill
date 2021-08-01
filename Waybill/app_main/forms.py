@@ -31,13 +31,13 @@ class WRideForm(ModelForm):
         
         widgets={            
             'time_in' : forms.TimeInput(attrs={
-                                            'style' : 'width:50px',
+                                            'style' : 'width:200px',
                                             'class' : 'time_in_class',
                                             'placeholder' : 'Авто',
                                             'id' : 'time_in'}),
 
             'time_out' : forms.TimeInput(attrs={
-                                            'style' : 'width:50px', 
+                                            'style' : 'width:200px', 
                                             'placeholder' : 'Авто',
                                             'class' : 'time_out_class',
                                             'id' : 'time_out'}),
@@ -72,8 +72,8 @@ class WHeadForm(ModelForm):
                                             'style' : 'width:100px'}),
             'transport' : ListTextWidget(data_list=TRANSPORT_LIST, name="tr_list",
                                          attrs={
-                                            'style' : 'width:130px',
+                                            'style' : 'width:200px',
                                             'id' : 'tr_id',                                            
-                                            'placeholder' : 'Номер ТС',
+                                            'placeholder' : 'От 1 до 3 цифр',
                                             'type' : 'number'}),
     }

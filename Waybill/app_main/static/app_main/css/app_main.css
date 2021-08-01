@@ -3,23 +3,18 @@ ul {
     margin: 0; /*убираем верхнее и нижнее поле, равное 1em*/
     padding-left: 0; /*убираем левый отступ, равный 40px*/
 }
+
+
 li {
     display: inline;
     margin-inline: 7px;
 }
 
-#wbform {
-    max-width: 500px;
-    background-color: #fced8d;
-    border-style: solid;
-    border-width: 5px;
-    border-color: black;
+
+tr {
+    height: 35px;
 }
 
-
-#b_submit {
-    margin-inline: 70px;
-}
 
 .buttons {
     text-align: center;
@@ -28,9 +23,36 @@ li {
     padding: 20px;
 }
 
+
+.table_center_field {
+    width: 400px;
+}
+
+#ride_form, #form_head {
+    max-width: 500px;
+    background-color: #fced8d;
+    border-style: solid;
+    border-width: 5px;
+    border-color: black;
+    border-radius: 20px;
+    padding: 15px;
+}
+
+
+#ride_other {
+    text-align: right;
+}
+
+
+#b_submit {
+    margin-inline: 70px;
+}
+
+
 #application {
     text-align: right;
 }
+
 
 @media print {
     .no_print, .no_print * {

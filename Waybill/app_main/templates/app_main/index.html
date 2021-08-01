@@ -15,35 +15,53 @@
 <center>
 	<form method="post" id="wbform">
 		{% csrf_token %}
-		Дата: {{ head_form.date}}
+		<h2>Заголовок формы:</h2>
+		<div id="form_head">
+			<p>Дата: {{ head_form.date }}</p>
+			<p>№ транспортного средства:<br />{{ head_form.transport }}</p>
+			Навзание транспортного средства: <input id="tr_name" placeholder="Заполняется автоматически при выборе № ТС" type="text" size=50>
+		</div>
 		<br><br>
-		Вид	транспортного средства <input id="tr_name" placeholder="Заполняется автоматически" type="text" size=50> № {{ head_form.transport}}
-		<br><br>
-		<!--Время при прибытии-->
 		<div id="form_to_clone">
-			Время при прибытии: {{ ride_form.time_in}}
-			<br><br>
-			<!--Время при убытии-->
-			Время при убытии: {{ ride_form.time_out}}
-			<br><br>
-			<!--Группа расходов-->
-			Группа расходов: {{ ride_form.expense_group}}
-			<br><br>
-			<!--Объект; Характер (описание) работ (услуг); Вид работ (услуг) № заказ-наряда и дефектной ведомости-->
-			Номер маршрута: {{ ride_form.route }}<br><br>
-			Описание: <textarea class="table_center_field" id="route_desc" placeholder="*Описание*. Заполняется автоматически при выборе маршрута" type="text" cols="35" rows="3"></textarea>
-			<br><br>
-			<!--Подразделение (цех, отдел, и т.п.)-->
-			Подразделение: {{ ride_form.unit}}
+			<h2 id="ride_head">Поездка №1:</h2>
+			<div id="ride_form">
+				<!--Объект; Характер (описание) работ (услуг); Вид работ (услуг) № заказ-наряда и дефектной ведомости-->
+				<p>Информация о маршруте:<br />{{ ride_form.route }}</p>
+				<textarea class="table_center_field" id="route_desc" placeholder="Описание маршрута. Заполняется автоматически при выборе № маршрута" type="text" cols="35" rows="3"></textarea>
+				<br><br>
+				<table>
+					<tr>
+						<!--Время при прибытии-->
+						<td>Время при прибытии:</td>
+						<td>{{ ride_form.time_in }}</td>
+					</tr>
+					<tr>
+						<!--Время при убытии-->
+						<td>Время при убытии:</td>
+						<td>{{ ride_form.time_out }}</td>
+					</tr>
+					<tr>
+						<!--Группа расходов-->
+						<td>Группа расходов:</td>
+						<td>{{ ride_form.expense_group }}</td>
+					</tr>
+					<tr>
+						<!--Подразделение (цех, отдел, и т.п.)-->
+						<td>Подразделение:</td>
+						<td>{{ ride_form.unit }}</td>
+					</tr>
+				</table>
+			</div>
+			<br />
 		</div>
 		<div id="paste_form_here">
 
 		</div>
-		<br><br>
+		<br>
 		<div class="buttons">
 			<ul>
-				<li><button id="b_add" class="btn btn-warning" type="submit">Добавить строку</button></li>
-				<li><button id="b_remove" class="btn btn-warning" type="submit">Удалить строку</button></li>
+				<li><button id="b_add" class="btn btn-warning" type="button">Добавить строку</button></li>
+				<li><button id="b_remove" class="btn btn-warning" type="button">Удалить строку</button></li>
 				<li><button id="b_submit" class="btn btn-success" type="submit">Создать и распечатать форму</button></li>
 			</ul>
 		</div>
