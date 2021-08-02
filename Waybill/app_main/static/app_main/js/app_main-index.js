@@ -53,7 +53,7 @@ function addForm() {
 
         //Меняем текст заголовка у каждой поездки:
         ride_head_text = document.getElementById('ride_head').textContent;
-        document.getElementById('ride_head' + idAddition).textContent = ride_head_text.substring(0, ride_head_text.length - 2) + ':' + parseInt(idAddition + 1);
+        document.getElementById('ride_head' + idAddition).textContent = ride_head_text.substring(0, ride_head_text.length - 2) + parseInt(idAddition + 1) + ':';
 
         
         pastedForms.unshift(formClone);
