@@ -1,5 +1,7 @@
 https://github.com/Kolgolar/Waybill.git
 
+ovniy@yandex.ru
+
 Логин админки: admin
 Пароль: 12345
 
