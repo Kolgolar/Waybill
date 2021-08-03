@@ -3,7 +3,7 @@ from django.contrib.postgres.fields import ArrayField
 from django.contrib import admin
 from django.forms import CheckboxSelectMultiple
 
-class Transport(models.Model):
+class Transport(models.Model): # Справочник транспорта
     id = models.AutoField('№ п/п', primary_key = True)
     mark = models.CharField('Марка, модель', max_length=64)
     year = models.DecimalField('Год выпуска', max_digits = 4, decimal_places = 0, null=True) #Необязательное поле
@@ -17,7 +17,7 @@ class Transport(models.Model):
         verbose_name_plural = 'Справочник автотранспорта ГК "Альтекс"'
 
 
-class WRide(models.Model):
+class WRide(models.Model): # Модель поездок
     head_id = models.PositiveIntegerField('№')
     time_in = models.TimeField('Время при прибытии')
     time_out = models.TimeField('Время при убытии')
@@ -34,7 +34,7 @@ class WRide(models.Model):
         verbose_name_plural = 'Поездки маршрутных листов'
 
 
-class WHead(models.Model):
+class WHead(models.Model): # Модель шапки маршрутных листов
     creation_datetime = models.DateTimeField(null=True)
     date = models.DateTimeField('Дата')
     transport = models.PositiveSmallIntegerField("Транспорт", null = False)
@@ -49,7 +49,7 @@ class WHead(models.Model):
 
 
 
-class Stop(models.Model): #Существует как просто список названий остановок
+class Stop(models.Model): # Справочник остановок (онли названия)
     name = models.CharField('Остановка', max_length = 32)    
 
     class Meta:
@@ -60,7 +60,7 @@ class Stop(models.Model): #Существует как просто список
         return self.name
 
 
-class Route(models.Model):
+class Route(models.Model): # Модель маршрута
     OUT = 'Вывоз'
     IN = 'Завоз'
     ROUTE_CHOICES = {(OUT, 'Вывоз'),
@@ -80,8 +80,9 @@ class Route(models.Model):
     def __str__(self):
         return "{0}/{1}".format(self.num_1, self.num_2)
 
-    
-class InlineStop(models.Model): #Те же остановки, но уже для отображения в маршруте
+ #Те же остановки, но уже для отображения в маршруте. Тут какая-то чёрная магия работает:
+ # Очень важно не менять порядок объявления в этом скрипте: Stop, Route и InlineStop, иначе полетит всё.
+class InlineStop(models.Model):
     name = models.ForeignKey(Stop, on_delete=models.CASCADE)
     route = models.ForeignKey(Route, on_delete=models.CASCADE)
     time = models.TimeField('Время')
@@ -93,7 +94,7 @@ class InlineStop(models.Model): #Те же остановки, но уже дл�
         return str(self.name)
 
 
-class ExpenseGroup(models.Model):
+class ExpenseGroup(models.Model): # Справочник групп расходов
     name = models.CharField('Название', max_length = 32)  
 
     class Meta:
@@ -104,7 +105,7 @@ class ExpenseGroup(models.Model):
         return self.name
 
 
-class Unit(models.Model):
+class Unit(models.Model): # Справочник подразделений
     name = models.CharField('Название', max_length = 32)  
 
     class Meta:

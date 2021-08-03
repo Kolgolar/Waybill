@@ -15,46 +15,54 @@ from datetime import timedelta
 
 @csrf_exempt
 
+# Когда пользователь заполняет и сохраняет форму, django получает данные шапки (она всегда одна) и данные ВСЕХ поездок в одной поездке...
+# То есть, как будто бы пользователь не создал n форм, а в каждое поле поездки ввёл n значений
+
+# Шапки и поездки храняться отдельно в БД и объединены общими id (каждая поездка имеет поле head_id)
+
+# Возвращает страницу заполнения формы или перекидывает на страницу печати:
 def index(request):
     error = ''
-    HEAD_FIELDS_Q = 3
-    print(request.method)
-    if request.method == 'POST':
-        head_form = WHeadForm(request.POST)
-        ride_form = WRideForm(request.POST)
-        if (head_form.is_valid() and ride_form.is_valid()):
+
+    if request.method == 'POST': # Если пользователь заполнил форму
+        head_form = WHeadForm(request.POST) # Получаем введённые значения шапки
+        ride_form = WRideForm(request.POST) # Получаем значения ВСЕХ поездок
+        #print ride_form
+        
+        if (head_form.is_valid() and ride_form.is_valid()): #Проверка валидности
+            # Создаём запись в БД с шапкой таблицы:
             head_instance = head_form.save(commit=False)
             head_instance.creation_datetime = timezone.now() + timedelta(hours=24)
             head_instance = head_form.save()  
-            head_id = head_instance.id
+            head_id = head_instance.id # Запоминаем id шапки
 
-            val_q = len(request.POST.getlist("unit"))
+            val_q = len(request.POST.getlist("unit")) # Узнаём количество поездок (просто смотрим, сколько значений у полей полученной формы)
 
-            all_keys = list(request.POST.dict().keys())
-            #TODO: Remove fields with cycle
+            # Создаём список полей поездки (худший код, который я писал, зато если будет меняться структура полей поездки, то ничего менять не надо))))
+            all_keys = list(request.POST.dict().keys()) # ВСЕ поля обеих форм
+            #TODO: Переделать в цикл
+            # Удаляем поля шапки:
             all_keys.remove('csrfmiddlewaretoken')
             all_keys.remove('date_day')            
             all_keys.remove('date_month')
             all_keys.remove('date_year')
             all_keys.remove('transport')
-            ride_keys = all_keys
-            #print(ride_keys)
+            ride_keys = all_keys # Теперь у нас есть список всех полей поездки
 
-            for i in range(val_q):
+            for i in range(val_q): # Зная количество поездок, сохраняем их в БД
                 new_ride = WRide()
-                setattr(new_ride, 'head_id', head_id)
+                setattr(new_ride, 'head_id', head_id) # Сохраняем id шапки
                 for key in ride_keys:
                     setattr(new_ride, key, request.POST.getlist(key)[i])
-                    #print(("Form #{0}, field '{1}' = {2}").format(i, key, new_ride.key)) #Не работает
                 new_ride.save()
         else:
             error = "Форма заполнена неверно!"
 
-        #return redirect('print_form')
-
-        return redirect('print_page/' + str(head_id))
+        return redirect('print_page/' + str(head_id)) # Перевод на страницу печати маршрутного листа, плюс передача id шапки и head_id поездок
     
+    # Если пользователь просто перешёл на главную страницу:
     else:
+        # Создаём формы:
         head_form = WHeadForm()
         ride_form = WRideForm()
         data = {
@@ -63,15 +71,17 @@ def index(request):
             'error' : error
         }
 
-        return render(request,'app_main/index.html', data)
+        return render(request,'app_main/index.html', data) # Рендерим страницу и передаём данные в html
     
 
+# Возвращает страницу печати:
 def print_page(request, form_id):
-    head = WHead.objects.get(id = form_id)
+    head = WHead.objects.get(id = form_id) # Получаем шапку поездки
     rides = WRide.objects.all().filter(head_id = form_id) #Получает QuerySet поездок, относящихся к одному листу
-    wb_heads = WHead.objects.all()
+    wb_heads = WHead.objects.all() # Получаем все шапки поездок
     
-    #Создаём поле с возможностью выбора любого из ранее созданных листов:
+    #Создаём поле с возможностью выбора любого из ранее созданных листов (НЕ ДОДЕЛАНО):
+    ######
     wb_heads_names = ['---------']
     count = 0
     for w in wb_heads:
@@ -80,11 +90,16 @@ def print_page(request, form_id):
         wb_heads_names.append("На " + str(date) + " №" + str(id))
         count += 1    
     wb_list_form = WListForm(wb=wb_heads_names)
-
-    for r in rides:
-        route_name = getattr(r, 'route', 'ERROR: Route not found!')
-        description = get_rout_attrs(route_name)['description']
-        r.desc = description
+    ######
+    
+    for r in rides: # Проходим по всем поездкам
+        route_name = getattr(r, 'route', 'ERROR: Route not found!') # Получаем номер маршрута (не используется в печатной форме)
+        description = get_rout_attrs(route_name)['description'] # Используя номер маршрута, получаем его описание
+        r.desc = description 
+    # Такая наркоманская система используется потому, что в БД каждая поездка хранит только номер маршрута,
+    # Соответственно, описание маршрута надо брать из справочника с ними. Вроде логично, но
+    # ЖЕЛАТЕЛЬНО ИСПРАВИТЬ ЭТО, поскольку пользователь может вводить своё описание маршрута, но оно не будет сохранено
+    # Т.е. надо добавить в модель и форму поездки ещё и поле с описанием маршрута
    
     data = {
         'date' : head.date,
@@ -95,9 +110,6 @@ def print_page(request, form_id):
 
     return render(request, 'app_main/print_page.html', data)
 
-
-def print_form(request):
-    return render(request, 'app_main/print_form.html')
 
 
 #TODO: Передавать на клиент отдельно марку и номер, создавать строку уже там
@@ -116,7 +128,7 @@ def get_tr_data(id_need): # Собственно логика получения
 
 
 #TODO: Сделать проверку валидности строки на стороне клиента
-def get_route_info(request):
+def get_route_info(request): # Возвращает описание маршрута, время прибытия и убытия
     data = {}
     description = ''
     time_in = 0
@@ -146,7 +158,7 @@ def get_route_info(request):
     data_json = json.dumps(data)
     return HttpResponse(data_json)
 
-def get_rout_attrs(value):
+def get_rout_attrs(value): # Получаем данные маршрута
     idxs = value.split('/')
     route_obj = Route.objects.all().filter(num_1 = idxs[0], num_2 = idxs[1]).first()
     description = getattr(route_obj, "description", "Маршрут не найден! Проверьте правильность номера или введите своё описание.")

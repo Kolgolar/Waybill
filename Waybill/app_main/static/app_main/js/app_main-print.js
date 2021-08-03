@@ -1,24 +1,6 @@
 $(document).ready(function () {
-    $("#b_print").click(function () { print(); });
+    $("#b_print").click(function () { print(); }); // Вызов печати
     $(document).on("change", "id_wb_name", function () {
-
-    });
-
-
-
-    var doc = new jsPDF();
-    var specialElementHandlers = {
-        '#print_table': function (element, renderer) {
-            return true;
-        }
-    };
-
-
-    $('#b_pdf').click(function () {
-        doc.fromHTML($('#content').html(), 15, 15, {
-            'width': 170,
-            'elementHandlers': specialElementHandlers
-        });
-        doc.save('sample-file.pdf');
+        // Здесь должна быть функция, которая обновляет страницу и выводит данные выбранного маршрутного листа
     });
 });

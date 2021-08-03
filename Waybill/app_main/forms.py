@@ -2,7 +2,8 @@ from .models import WRide, WHead, Transport, Route, ExpenseGroup, Unit
 from django.forms import ModelForm, TextInput, modelformset_factory
 from django import forms
 
-# Создаёт поле с возможностью как выбора из списка, так и ввода своих значений:
+# Этот класс создаёт поле с возможностью как выбора из списка вариантов, так и ввода своих значений
+# Понятия не имею, как это работает
 class ListTextWidget(forms.TextInput): 
     def __init__(self, data_list, name, *args, **kwargs):
         super(ListTextWidget, self).__init__(*args, **kwargs)
@@ -20,8 +21,10 @@ class ListTextWidget(forms.TextInput):
         return (text_html + data_list)
 
 
+# Форма с данными поездки (время прибытия и убытия, маршрут, группа расходов и подразделение):
 class WRideForm(ModelForm):
     class Meta:
+        # Создаём массивы со всеми маршрутами, группами расходов и подразделениями, чтобы вставить в выпадающее меню:
         ROUTE_LIST = list(Route.objects.all())
         EXPENSE_GROUP_LIST = list(ExpenseGroup.objects.all())
         UNIT_LIST = list(Unit.objects.all())
@@ -60,7 +63,7 @@ class WRideForm(ModelForm):
                                             'class' : 'table_center_field'}),
         }
 
-
+# Форма шапки маршрутного листа (Дата, номер ТС)
 class WHeadForm(ModelForm):
     class Meta:
         TRANSPORT_LIST = list(Transport.objects.all())
@@ -79,6 +82,8 @@ class WHeadForm(ModelForm):
         }
 
 
+# Форма для создания выпадающего меню со значениями из choices[]
+# Используется на листе печати для выбора маршрутного листа из списка доступных в БД
 class WListForm(forms.Form):
     wb_name = forms.ChoiceField(label='full_name', choices=[])
 
