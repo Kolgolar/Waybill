@@ -66,7 +66,7 @@ class WHeadForm(ModelForm):
         TRANSPORT_LIST = list(Transport.objects.all())
         model = WHead
         fields = ['date', 'transport']
-        widgets={
+        widgets = {
             'date' : forms.SelectDateWidget(
                                         attrs={
                                             'style' : 'width:100px'}),
@@ -76,4 +76,16 @@ class WHeadForm(ModelForm):
                                             'id' : 'tr_id',                                            
                                             'placeholder' : 'От 1 до 3 цифр',
                                             'type' : 'number'}),
-    }
+        }
+
+
+class WListForm(forms.Form):
+    wb_name = forms.ChoiceField(label='full_name', choices=[])
+
+    def __init__(self, wb=None, *args, **kwargs):
+        super(WListForm, self).__init__(*args, **kwargs)
+        if wb:
+            self.fields['wb_name'].choices = [
+                (str(k), v)
+                for k, v in enumerate(wb)
+            ]

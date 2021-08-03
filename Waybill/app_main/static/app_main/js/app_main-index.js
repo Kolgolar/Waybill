@@ -1,6 +1,6 @@
 let pastedForms = [];
 let timeDiffs = {};
-const MAX_ROWS = 5
+const MAX_RIDES = 4
 
 $(document).ready(function () {
     $("#b_add").click(addForm);
@@ -35,7 +35,7 @@ $(document).ready(function () {
 
 
 function addForm() {
-    if (pastedForms.length + 1 < MAX_ROWS) {
+    if (pastedForms.length + 1 < MAX_RIDES) {
         let formClone = $("#form_to_clone").clone();
         formClone.find("input[type=text], textarea").val(""); // Очищаем все поля скопированной формы
         let idsToRename = ['ride_head', 'route_id', 'route_desc', 'time_in', 'time_out'];
@@ -59,7 +59,7 @@ function addForm() {
         pastedForms.unshift(formClone);
     }
     else
-        alert(`В маршрутном листе не может быть больше ${MAX_ROWS} поездок`);
+        alert(`В маршрутном листе не может быть больше ${MAX_RIDES} поездок`);
 }
 
 function removeForm() {

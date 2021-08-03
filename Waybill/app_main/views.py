@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect, HttpResponse
 from django.forms import modelformset_factory
 from .models import WRide, WHead, Transport, Route, InlineStop
-from .forms import WRideForm, WHeadForm
+from .forms import WRideForm, WHeadForm, WListForm
 from django.utils.timezone import localtime
 from django.views.decorators.csrf import csrf_exempt
 import json
@@ -31,7 +31,7 @@ def index(request):
             val_q = len(request.POST.getlist("unit"))
 
             all_keys = list(request.POST.dict().keys())
-            #TODO: Remove fields and make cycle
+            #TODO: Remove fields with cycle
             all_keys.remove('csrfmiddlewaretoken')
             all_keys.remove('date_day')            
             all_keys.remove('date_month')
@@ -69,16 +69,28 @@ def index(request):
 def print_page(request, form_id):
     head = WHead.objects.get(id = form_id)
     rides = WRide.objects.all().filter(head_id = form_id) #Получает QuerySet поездок, относящихся к одному листу
+    wb_heads = WHead.objects.all()
+    
+    #Создаём поле с возможностью выбора любого из ранее созданных листов:
+    wb_heads_names = ['---------']
+    count = 0
+    for w in wb_heads:
+        date = getattr(w, 'date', 'unknown')
+        id = getattr(w, 'id', 'unknown')
+        wb_heads_names.append("На " + str(date) + " №" + str(id))
+        count += 1    
+    wb_list_form = WListForm(wb=wb_heads_names)
+
     for r in rides:
         route_name = getattr(r, 'route', 'ERROR: Route not found!')
         description = get_rout_attrs(route_name)['description']
         r.desc = description
-        print(r)
    
     data = {
         'date' : head.date,
         'transport' : get_tr_data(head.transport),
         'rides' : rides,
+        'wb_list_form' : wb_list_form,
     }
 
     return render(request, 'app_main/print_page.html', data)
@@ -137,6 +149,6 @@ def get_route_info(request):
 def get_rout_attrs(value):
     idxs = value.split('/')
     route_obj = Route.objects.all().filter(num_1 = idxs[0], num_2 = idxs[1]).first()
-    description = getattr(route_obj, "description", "Маршрут не найден! Проверьте правильность ввода или введите своё описание.")
+    description = getattr(route_obj, "description", "Маршрут не найден! Проверьте правильность номера или введите своё описание.")
     return {'idxs' : idxs, 'route_obj' : route_obj, 'description' : description}
        
