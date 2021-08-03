@@ -38,7 +38,7 @@ function addForm() { // Добавляем поездку
         formClone.find("input[type=text], textarea").val(""); // Очищаем все поля скопированной формы
         let idsToRename = ['ride_head', 'route_id', 'route_desc', 'time_in', 'time_out'];
 
-        // Добавляем к id выбранных элементов номер, чтобы избежать дубликатов и иметь возможность обращаться к ним в будущем
+        // Добавляем к id выбранных элементов номер, чтобы избежать дубликатов и иметь возможность обращаться к ним в будущем:
         let idAddition = parseInt(pastedForms.length + 1);
         idsToRename.forEach(function (item, i, idsToRename) {
             formClone.find('#' + item).prop('id', item + idAddition);
