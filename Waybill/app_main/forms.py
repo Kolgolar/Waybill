@@ -2,7 +2,8 @@ from .models import WRide, WHead, Transport, Route, ExpenseGroup, Unit
 from django.forms import ModelForm, TextInput, modelformset_factory
 from django import forms
 
-# Создаёт поле с возможностью как выбора из списка, так и ввода своих значений:
+# Этот класс создаёт поле с возможностью как выбора из списка вариантов, так и ввода своих значений
+# Понятия не имею, как это работает
 class ListTextWidget(forms.TextInput): 
     def __init__(self, data_list, name, *args, **kwargs):
         super(ListTextWidget, self).__init__(*args, **kwargs)
@@ -20,8 +21,10 @@ class ListTextWidget(forms.TextInput):
         return (text_html + data_list)
 
 
+# Форма с данными поездки (время прибытия и убытия, маршрут, группа расходов и подразделение):
 class WRideForm(ModelForm):
     class Meta:
+        # Создаём массивы со всеми маршрутами, группами расходов и подразделениями, чтобы вставить в выпадающее меню:
         ROUTE_LIST = list(Route.objects.all())
         EXPENSE_GROUP_LIST = list(ExpenseGroup.objects.all())
         UNIT_LIST = list(Unit.objects.all())
@@ -31,13 +34,16 @@ class WRideForm(ModelForm):
         
         widgets={            
             'time_in' : forms.TimeInput(attrs={
-                                            'style' : 'width:50px',
-                                            'class' : 'table_center_field'}),
+                                            'style' : 'width:200px',
+                                            'class' : 'time_in_class',
+                                            'placeholder' : 'Авто',
+                                            'id' : 'time_in'}),
 
             'time_out' : forms.TimeInput(attrs={
-                                            'style' : 'width:50px', 
-                                            'placeholder' : 'Заполнится автоматически',
-                                            'class' : 'table_center_field'}),
+                                            'style' : 'width:200px', 
+                                            'placeholder' : 'Авто',
+                                            'class' : 'time_out_class',
+                                            'id' : 'time_out'}),
 
             'route' : ListTextWidget(data_list=ROUTE_LIST, name="route_list", 
                                          attrs={
@@ -48,29 +54,43 @@ class WRideForm(ModelForm):
 
             'expense_group' : ListTextWidget(data_list=EXPENSE_GROUP_LIST, name="expense_group_list",
                                         attrs={
-                                            'style' : 'width:80px',
+                                            'style' : 'width:200px',
                                             'class' : 'table_center_field'}),
             
             'unit' : ListTextWidget(data_list=UNIT_LIST, name="unit_list",
                                         attrs={
-                                            'style' : 'width:50',
+                                            'style' : 'width:200',
                                             'class' : 'table_center_field'}),
         }
 
-
+# Форма шапки маршрутного листа (Дата, номер ТС)
 class WHeadForm(ModelForm):
     class Meta:
         TRANSPORT_LIST = list(Transport.objects.all())
         model = WHead
         fields = ['date', 'transport']
-        widgets={
+        widgets = {
             'date' : forms.SelectDateWidget(
                                         attrs={
                                             'style' : 'width:100px'}),
             'transport' : ListTextWidget(data_list=TRANSPORT_LIST, name="tr_list",
                                          attrs={
-                                            'style' : 'width:130px',
+                                            'style' : 'width:200px',
                                             'id' : 'tr_id',                                            
-                                            'placeholder' : 'Номер ТС',
+                                            'placeholder' : 'От 1 до 3 цифр',
                                             'type' : 'number'}),
-    }
+        }
+
+
+# Форма для создания выпадающего меню со значениями из choices[]
+# Используется на листе печати для выбора маршрутного листа из списка доступных в БД
+class WListForm(forms.Form):
+    wb_name = forms.ChoiceField(label='full_name', choices=[])
+
+    def __init__(self, wb=None, *args, **kwargs):
+        super(WListForm, self).__init__(*args, **kwargs)
+        if wb:
+            self.fields['wb_name'].choices = [
+                (str(k), v)
+                for k, v in enumerate(wb)
+            ]
