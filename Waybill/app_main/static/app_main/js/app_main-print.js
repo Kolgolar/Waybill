@@ -1,5 +1,4 @@
 $(document).ready(function () {
-    print();
     $("#b_print").click(function () { print(); });
 
 
